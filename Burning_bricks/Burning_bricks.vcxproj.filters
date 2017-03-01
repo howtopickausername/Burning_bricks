@@ -23,6 +23,9 @@
     <Filter Include="Controler">
       <UniqueIdentifier>{c1101a41-952c-4051-ad56-519e9481a3df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Definition">
+      <UniqueIdentifier>{94a42649-3d96-4826-98ac-9432035c4ddb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -92,6 +95,15 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Definition\Definition.h">
+      <Filter>Definition</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\GameWorld.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\KetboardCmdProductor.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\StateBreed.cpp">
@@ -144,6 +156,10 @@
     </ClCompile>
     <ClCompile Include="Burning_bricks.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Game\GameWorld.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\KetboardCmdProductor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Burning_bricks.rc">

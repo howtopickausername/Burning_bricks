@@ -16,11 +16,12 @@ public:
 	~cKeyboard();
 	void ClearTable();
 	bool Poll(int key) const;
-	void SetReceiver(iKeyboadrReceiver* pTarget);
+	void SetReceiver(std::shared_ptr<iKeyboadrReceiver> pTarget);
 	eResult Update();
+	constexpr static unsigned int NumOfKeys = 256;
 
 private:
 	LPDIRECTINPUTDEVICE8 m_pDevice;
-	iKeyboadrReceiver* m_pTarget;
-	BYTE m_KeyState[256];
+	std::shared_ptr<iKeyboadrReceiver> m_pTarget;
+	BYTE m_KeyState[NumOfKeys];
 };

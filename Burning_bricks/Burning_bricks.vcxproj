@@ -155,6 +155,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>dxguid.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ConsoleD|x64'">
@@ -162,12 +163,13 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>dxguid.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -215,11 +217,14 @@
     <ClInclude Include="Controler\InputLayer.h" />
     <ClInclude Include="Controler\Keyboard.h" />
     <ClInclude Include="Controler\Mouse.h" />
+    <ClInclude Include="Definition\Definition.h" />
     <ClInclude Include="Game\GameObjBreed.h" />
     <ClInclude Include="Game\Command.h" />
     <ClInclude Include="Game\CommandBreed.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\GameScene.h" />
+    <ClInclude Include="Game\GameWorld.h" />
+    <ClInclude Include="Game\KetboardCmdProductor.h" />
     <ClInclude Include="Game\Locator.h" />
     <ClInclude Include="Game\MonsterFactory.h" />
     <ClInclude Include="Game\RenderInfo.h" />
@@ -244,6 +249,8 @@
     <ClCompile Include="Game\GameObjBreed.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\GameScene.cpp" />
+    <ClCompile Include="Game\GameWorld.cpp" />
+    <ClCompile Include="Game\KetboardCmdProductor.cpp" />
     <ClCompile Include="Game\Locator.cpp" />
     <ClCompile Include="Game\MonsterFactory.cpp" />
     <ClCompile Include="Game\State.cpp" />

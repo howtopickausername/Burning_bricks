@@ -54,7 +54,7 @@ bool cKeyboard::Poll(int key) const
 	}
 }
 
-void cKeyboard::SetReceiver(iKeyboadrReceiver* pTarget)
+void cKeyboard::SetReceiver(std::shared_ptr<iKeyboadrReceiver> pTarget)
 {
 	m_pTarget = pTarget;
 }

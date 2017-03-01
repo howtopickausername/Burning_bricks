@@ -9,8 +9,8 @@ class cInputLayer
 public:
 	cInputLayer(HINSTANCE instance, HWND hWnd, bool bExclusive, bool bUseKeyboard = true, bool bUseMouse = true);
 	virtual ~cInputLayer();
-	std::shared_ptr<const cKeyboard> GetKeyboard() const { return m_Keyboard; };
-	std::shared_ptr<const cMouse> GetMouse() const { return m_Mouse; };
+	std::shared_ptr<cKeyboard> GetKeyboard() { return m_Keyboard; };
+	std::shared_ptr<cMouse> GetMouse() { return m_Mouse; };
 	void UpdateDevice();
 	void SetFocus();
 	void KillFocue();

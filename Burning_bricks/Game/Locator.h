@@ -3,18 +3,23 @@
 #include "Physics/Physics.h"
 #include "Graphics/Graphics.h"
 #include "ToolKits/Log.h"
+#include "Controler/InputLayer.h"
 
 class cLocator
 {
 public:
+	static void Init(cLog* log, cAudio* audio, cPhysics* phys, cGraphics* grap, cInputLayer* inputlayer);
 	static cLog& Log();
 	static cAudio& Audio();
 	static cPhysics& Physics();
 	static cGraphics& Graphics();
+	static cInputLayer& InputLayer();
 
 private:
 	static cLog* m_Log;
 	static cAudio* m_audio;
 	static cPhysics* m_physics;
 	static cGraphics* m_Graphics;
+	static cInputLayer* m_InputLayer;
+	static bool m_Init;
 };
