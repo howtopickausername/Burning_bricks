@@ -8,7 +8,7 @@ public:
 	cGameObject(cState const& state);
 	~cGameObject();
 	void SendCmd(cCommand const& cmd);
-	void HandleInput();
+	void ProcessCmd();
 	void Update();
 	void Swap();
 	std::shared_ptr<cGameObject> Copy();

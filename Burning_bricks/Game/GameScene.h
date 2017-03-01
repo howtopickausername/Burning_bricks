@@ -10,11 +10,13 @@ public:
 	~cGameScene();
 	void CreateScene();
 	void DestroyScene();
-	void HandleInput();
+	void ProcessCmd();
 	void HandleInput(cCommand const& cmd);
 	void Update();
 
 protected:
+	void Swap();
+
 	cLocator& Locator();
 	pGameObject CurObj;
 	std::map<int, pGameObject> Objs;

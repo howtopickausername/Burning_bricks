@@ -12,6 +12,7 @@ public:
 
 	virtual void KeyUp(int key) override;
 	virtual void KeyDown(int key) override;
+	virtual void KeyDownOnce(int key) override;
 
 	std::array<cCommand, cKeyboard::NumOfKeys> CmdUpMaps;
 	std::array<cCommand, cKeyboard::NumOfKeys> CmdDownMaps;

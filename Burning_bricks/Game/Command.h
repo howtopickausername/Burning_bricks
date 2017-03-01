@@ -8,6 +8,7 @@ enum eCmd {
 	eTurnLeft,
 	eTurnRight,
 	eTurnBack,
+	eJump
 };
 
 class cCommand

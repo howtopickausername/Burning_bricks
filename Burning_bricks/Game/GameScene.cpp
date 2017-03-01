@@ -18,6 +18,7 @@ void cGameScene::CreateScene()
 {
 	pGameObject monster = cMonsterFactory::CreateMonster();
 	Objs.insert(std::make_pair(0, monster));
+	CurObj = monster;
 }
 
 void cGameScene::DestroyScene()
@@ -25,10 +26,10 @@ void cGameScene::DestroyScene()
 
 }
 
-void cGameScene::HandleInput()
+void cGameScene::ProcessCmd()
 {
-	concurrency::parallel_for_each(begin(Objs), end(Objs), [&](auto it) {
-		it.second->HandleInput();
+	/*concurrency::parallel_*/std::for_each(begin(Objs), end(Objs), [&](auto it) {
+		it.second->ProcessCmd();
 	});
 }
 
@@ -39,8 +40,16 @@ void cGameScene::HandleInput(cCommand const& cmd)
 
 void cGameScene::Update()
 {
-	concurrency::parallel_for_each(begin(Objs), end(Objs), [](auto it) {
+	/*concurrency::parallel_*/std::for_each(begin(Objs), end(Objs), [](auto it) {
 		it.second->Update();
+	});
+	this->Swap();
+}
+
+void cGameScene::Swap()
+{
+	/*concurrency::parallel_*/std::for_each(begin(Objs), end(Objs), [](auto it) {
+		it.second->Swap();
 	});
 }
 

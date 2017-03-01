@@ -23,7 +23,7 @@ void cGameObject::Update()
 	BackState->Update();
 }
 
-void cGameObject::HandleInput()
+void cGameObject::ProcessCmd()
 {
 	while (!BackCmdQ.empty()) {
 		auto cmd = BackCmdQ.front();

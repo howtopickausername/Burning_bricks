@@ -7,6 +7,7 @@ class iKeyboadrReceiver
 public:
 	virtual void KeyUp(int key) = 0;
 	virtual void KeyDown(int key) = 0;
+	virtual void KeyDownOnce(int key) = 0;
 };
 
 class cKeyboard

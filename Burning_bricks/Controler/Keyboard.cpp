@@ -82,7 +82,7 @@ eResult cKeyboard::Update()
 					m_pTarget->KeyUp(i);
 				}
 				else {
-
+					m_pTarget->KeyDownOnce(i);
 				}
 			}
 			m_KeyState[i] = newState[i];

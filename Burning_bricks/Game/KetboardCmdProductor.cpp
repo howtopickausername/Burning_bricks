@@ -13,6 +13,11 @@ void cKbCmdProductor::KeyUp(int key)
 
 void cKbCmdProductor::KeyDown(int key)
 {
+
+}
+
+void cKbCmdProductor::KeyDownOnce(int key)
+{
 	assert(0 <= key && key < cKeyboard::NumOfKeys);
 	CmdQ.push(CmdDownMaps[key]);
 }
