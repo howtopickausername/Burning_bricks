@@ -26,6 +26,9 @@
     <Filter Include="Definition">
       <UniqueIdentifier>{94a42649-3d96-4826-98ac-9432035c4ddb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Protocol">
+      <UniqueIdentifier>{29315071-1820-4923-a234-2435d16019ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
