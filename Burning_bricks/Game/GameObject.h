@@ -12,7 +12,7 @@ public:
 	void ProcessCmd();
 	void Update();
 	void Swap();
-	//基础状态保存所有通用属性
+	//基础状态保存所有通用属性,位置、方向、类型
 	const pState GetCommonState() const;
 	std::shared_ptr<cGameObject> Copy();
 

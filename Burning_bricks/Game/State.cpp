@@ -43,6 +43,10 @@ void cState::HandleInput(cCommand const& cmd)
 	}
 }
 
+const pStateBreed cState::GetBreed() const {
+	return StateBreed;
+}
+
 std::shared_ptr<cState> cState::Copy() const
 {
 	return std::make_shared<cState>(*this);
