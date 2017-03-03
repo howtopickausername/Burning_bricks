@@ -18,7 +18,7 @@ void cState::Update()
 	StateBreed->fUpdate();
 }
 
-void cState::HandleInput(cCommand const& cmd)
+void cState::HandleInput(pCommand cmd)
 {
 	auto rt = StateBreed->fHandleInput(cmd);
 	if (std::get<0>(rt) == cStateBreed::OP::eRoleBack){
@@ -41,6 +41,10 @@ void cState::HandleInput(cCommand const& cmd)
 	else if (std::get<0>(rt) == cStateBreed::OP::eConstant) {
 		//do nothing
 	}
+}
+
+const pStateBreed cState::GetBreed() const {
+	return StateBreed;
 }
 
 std::shared_ptr<cState> cState::Copy() const

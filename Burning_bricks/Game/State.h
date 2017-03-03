@@ -8,9 +8,11 @@ public:
 	cState(pStateMap map);
 	~cState();
 	void Update();
-	void HandleInput(cCommand const& cmd);
+	void HandleInput(pCommand cmd);
+	const pStateBreed GetBreed() const;
 	std::shared_ptr<cState> Copy() const;
 
+private:
 	pStateMap StateMap;
 	pStateBreed StateBreed;
 	std::stack<pStateBreed> StateStack;

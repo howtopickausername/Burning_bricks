@@ -1,4 +1,7 @@
 #pragma once
+#include <string>
+#include <vector>
+#include <memory>
 //#include "CommandBreed.h"
 
 enum eCmd {
@@ -17,4 +20,7 @@ public:
 	cCommand(eCmd id = eNone);
 	~cCommand();
 	eCmd ID;
+	std::vector<int> IntP;
+	std::vector<std::string> StrP;
 };
+typedef std::shared_ptr<cCommand> pCommand;
