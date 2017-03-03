@@ -13,7 +13,7 @@ cGameObject::~cGameObject()
 
 }
 
-void cGameObject::SendCmd(cCommand const& cmd)
+void cGameObject::SendCmd(pCommand cmd)
 {
 	CurCmdQ.push(cmd);
 }

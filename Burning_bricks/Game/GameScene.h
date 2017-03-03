@@ -11,7 +11,7 @@ public:
 	void CreateScene();
 	void DestroyScene();
 	void ProcessCmd();
-	void HandleInput(cCommand const& cmd);
+	void HandleInput(pCommand cmd);
 	void Update();
 
 protected:

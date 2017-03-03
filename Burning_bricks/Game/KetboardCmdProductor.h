@@ -14,8 +14,8 @@ public:
 	virtual void KeyDown(int key) override;
 	virtual void KeyDownOnce(int key) override;
 
-	std::array<cCommand, cKeyboard::NumOfKeys> CmdUpMaps;
-	std::array<cCommand, cKeyboard::NumOfKeys> CmdDownMaps;
-	std::queue<cCommand> CmdQ;
+	std::array<pCommand, cKeyboard::NumOfKeys> CmdUpMaps;
+	std::array<pCommand, cKeyboard::NumOfKeys> CmdDownMaps;
+	std::queue<pCommand> CmdQ;
 };
 typedef std::shared_ptr<cKbCmdProductor> pKbCmdproductor;

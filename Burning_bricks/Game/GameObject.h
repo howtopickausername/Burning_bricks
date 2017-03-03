@@ -8,7 +8,7 @@ class cGameObject
 public:
 	cGameObject(cState const& basic_state);
 	~cGameObject();
-	void SendCmd(cCommand const& cmd);
+	void SendCmd(pCommand cmd);
 	void ProcessCmd();
 	void Update();
 	void Swap();
@@ -17,8 +17,8 @@ public:
 	std::shared_ptr<cGameObject> Copy();
 
 private:
-	std::queue<cCommand> CurCmdQ;
-	std::queue<cCommand> BackCmdQ;
+	std::queue<pCommand> CurCmdQ;
+	std::queue<pCommand> BackCmdQ;
 	std::vector<pState> CurState;
 	std::vector<pState> BackState;
 };

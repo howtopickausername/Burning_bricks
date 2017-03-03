@@ -18,7 +18,7 @@ void cState::Update()
 	StateBreed->fUpdate();
 }
 
-void cState::HandleInput(cCommand const& cmd)
+void cState::HandleInput(pCommand cmd)
 {
 	auto rt = StateBreed->fHandleInput(cmd);
 	if (std::get<0>(rt) == cStateBreed::OP::eRoleBack){

@@ -33,7 +33,7 @@ void cGameScene::ProcessCmd()
 	});
 }
 
-void cGameScene::HandleInput(cCommand const& cmd)
+void cGameScene::HandleInput(pCommand cmd)
 {
 	CurObj->SendCmd(cmd);
 }
