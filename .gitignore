@@ -212,3 +212,6 @@ _Pvt_Extensions/
 ModelManifest.xml
 /Burning_bricks.VC.db
 /Burning_bricks.VC.VC.opendb
+*.tlog
+*.idb
+/Burning_bricks/ConsoleD/Burning_bricks.res
