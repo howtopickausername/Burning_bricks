@@ -233,7 +233,6 @@
     <ClInclude Include="Game\StateBreed.h" />
     <ClInclude Include="Game\StateMap.h" />
     <ClInclude Include="Graphics\Graphics.h" />
-    <ClInclude Include="Graphics\GraphicsLayer.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -258,7 +257,6 @@
     <ClCompile Include="Game\State.cpp" />
     <ClCompile Include="Game\StateBreed.cpp" />
     <ClCompile Include="Game\StateMap.cpp" />
-    <ClCompile Include="Graphics\GraphicsLayer.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

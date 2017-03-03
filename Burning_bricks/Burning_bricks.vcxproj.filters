@@ -107,9 +107,6 @@
     <ClInclude Include="Game\KetboardCmdProductor.h">
       <Filter>Game</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\GraphicsLayer.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\StateBreed.cpp">
@@ -166,9 +163,6 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\KetboardCmdProductor.cpp" />
-    <ClCompile Include="Graphics\GraphicsLayer.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Burning_bricks.rc">
