@@ -14,6 +14,7 @@ void cGameWorld::WorldBeginning()
 	KbCmds->CmdDownMaps[DIK_D] = std::make_shared<cCommand>(eTurnRight);
 	KbCmds->CmdDownMaps[DIK_J] = std::make_shared<cCommand>(eJump);
 	cLocator::InputLayer().GetKeyboard()->SetReceiver(KbCmds);
+	m_SceneCanvas = cLocator::Graphics().NewCanvas(cLocator::Graphics().Width(), cLocator::Graphics().Height());
 	m_CurScene = std::make_shared<cGameScene>();
 	m_CurScene->CreateScene();
 }
@@ -23,7 +24,7 @@ void cGameWorld::HandleInput()
 	cLocator::InputLayer().UpdateDevice();
 	auto& cmdQ = KbCmds->CmdQ;
 	while (!cmdQ.empty()) {
-		m_CurScene->HandleInput(cmdQ.front());
+		m_CurScene->DispatchCmd(cmdQ.front());
 		cmdQ.pop();
 	}
 	m_CurScene->ProcessCmd();
@@ -36,4 +37,6 @@ void cGameWorld::Update()
 
 void cGameWorld::Render()
 {
+	m_CurScene->Render(m_SceneCanvas);
+	cLocator::Graphics().Draw();
 }

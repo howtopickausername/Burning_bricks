@@ -91,9 +91,6 @@
     <ClInclude Include="Controler\eResult.h">
       <Filter>Controler</Filter>
     </ClInclude>
-    <ClInclude Include="ControlerExceptionDefine.h">
-      <Filter>Controler</Filter>
-    </ClInclude>
     <ClInclude Include="Burning_bricks.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -107,6 +104,31 @@
     <ClInclude Include="Game\KetboardCmdProductor.h">
       <Filter>Game</Filter>
     </ClInclude>
+    <ClInclude Include="Game\TypesOfProperty.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Canvas.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicsLayer.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ModelColor.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ModelTranslate.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicsException.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Controler\ControlerExceptionDefine.h">
+      <Filter>Controler</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalVars.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\StateBreed.cpp">
@@ -163,6 +185,25 @@
       <Filter>Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\KetboardCmdProductor.cpp" />
+    <ClCompile Include="Graphics\GraphicsLayer.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Model.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ModelColor.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ModelTranslate.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Canvas.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Graphics.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalVars.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Burning_bricks.rc">

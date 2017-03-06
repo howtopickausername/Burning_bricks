@@ -1,4 +1,5 @@
 #pragma once
+#include "Graphics/Canvas.h"
 #include "Locator.h"
 #include "GameScene.h"
 #include "KetboardCmdProductor.h"
@@ -14,6 +15,7 @@ public:
 
 protected:
 	pKbCmdproductor KbCmds;
+	pCanvas m_SceneCanvas;
 	pGameScene m_CurScene;
 };
 typedef std::shared_ptr<cGameWorld> pGameWorld;

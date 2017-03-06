@@ -1,7 +1,11 @@
 #include "stdafx.h"
 #include "Graphics.h"
 
+cGraphics::cGraphics()
+	:m_Wnd(nullptr), m_width(0), m_height(0)
+{
 
+}
 
 cGraphics::~cGraphics()
 {
@@ -10,7 +14,7 @@ cGraphics::~cGraphics()
 
 void cGraphics::Init(HWND hWnd, int width, int height)
 {
-	m_hWnd = hWnd;
+	m_Wnd = hWnd;
 	m_width = width;
 	m_height = height;
 }
@@ -35,9 +39,8 @@ pCanvas cGraphics::NewCanvas(int width, int height)
 	return std::make_shared<cCanvas>();
 }
 
-void cGraphics::Draw(cDdInfo const& info)
+void cGraphics::Draw()
 {
-	info;
 }
 
 void cGraphics::Present()

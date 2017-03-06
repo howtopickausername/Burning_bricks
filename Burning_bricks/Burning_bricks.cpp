@@ -3,23 +3,20 @@
 
 #include "stdafx.h"
 #include "Burning_bricks.h"
+#include "GlobalVars.h"
 #include "Game\Locator.h"
+#include "Graphics\GraphicsLayer.h"
 #include "Game\GameWorld.h"
 
 #ifndef _CONSOLE
-#define MAX_LOADSTRING 100
-
 // Global Variables:
-HINSTANCE hInst;                                // current instance
-HWND hMainWnd;
-WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
+extern cGlobalVars gGlobal;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+void Preprocess(HINSTANCE hInstance);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -29,10 +26,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	// TODO: Place code here.
 	// Initialize global strings
-	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	LoadStringW(hInstance, IDC_BURNING_BRICKS, szWindowClass, MAX_LOADSTRING);
+	Preprocess(hInstance);
 	MyRegisterClass(hInstance);
 
 	// Perform application initialization:
@@ -45,8 +40,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		std::shared_ptr<cLog> log(std::make_shared<cLog>());
 		std::shared_ptr<cAudio> audio(std::make_shared<cAudio>());
 		std::shared_ptr<cPhysics> physics(std::make_shared<cPhysics>());
-		std::shared_ptr<cGraphics> graphics(std::make_shared<cGraphics>());
-		std::shared_ptr<cInputLayer> inputLayer(std::make_shared<cInputLayer>(hInst, hMainWnd, false));
+		std::shared_ptr<cGraphics> graphics(std::make_shared<cGraphicsLayer>());
+		graphics->Init(gGlobal.hWnd, gGlobal.width, gGlobal.height);
+		std::shared_ptr<cInputLayer> inputLayer(std::make_shared<cInputLayer>(gGlobal.hInst, gGlobal.hWnd, false));
 		cLocator::Init(log.get(), audio.get(), physics.get(), graphics.get(), inputLayer.get());
 		pGameWorld GW(std::make_shared<cGameWorld>());
 		GW->WorldBeginning();
@@ -108,7 +104,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszMenuName = nullptr;//MAKEINTRESOURCEW(IDC_BURNING_BRICKS);
-	wcex.lpszClassName = szWindowClass;
+	wcex.lpszClassName = gGlobal.szWindowClass;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
 	return RegisterClassExW(&wcex);
@@ -126,18 +122,17 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-	hInst = hInstance; // Store instance handle in our global variable
+	gGlobal.hInst = hInstance; // Store instance handle in our global variable
 
-	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+	gGlobal.hWnd = CreateWindowW(gGlobal.szWindowClass, gGlobal.szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
-	if (!hWnd) {
+	if (!gGlobal.hWnd) {
 		return FALSE;
 	}
 
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
-	hMainWnd = hWnd;
+	ShowWindow(gGlobal.hWnd, nCmdShow);
+	UpdateWindow(gGlobal.hWnd);
 	return TRUE;
 }
 
@@ -176,6 +171,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+void Preprocess(HINSTANCE hInstance)
+{
+	gGlobal.hInst = hInstance;
+	LoadStringW(gGlobal.hInst, IDS_APP_TITLE, gGlobal.szTitle, MAX_LOADSTRING);
+	LoadStringW(gGlobal.hInst, IDC_BURNING_BRICKS, gGlobal.szWindowClass, MAX_LOADSTRING);
+	STARTUPINFO si;
+	GetStartupInfo(&si);
+	if (si.dwFlags & STARTF_USEPOSITION){
+		gGlobal.posX = si.dwX;
+		gGlobal.posY = si.dwY;
+	}
+	if (si.dwFlags & STARTF_USESIZE) {
+		gGlobal.width = si.dwXSize;
+		gGlobal.height = si.dwYSize;
+	}
+}
+
 #else
 typedef std::chrono::duration<long long, std::ratio<1, 2> > FrameTime;
 int main(int argc, char** argv)
@@ -192,7 +204,7 @@ int main(int argc, char** argv)
 		//std::cout << du.count() << std::endl;
 		while (du >= FrameTime(1)) {
 			cCommand cmd(eGoForward);
-			g_Scene->HandleInput(cmd);
+			g_Scene->DispatchCmd(cmd);
 			g_Scene->Update();
 			du -= FrameTime(1);
 		}

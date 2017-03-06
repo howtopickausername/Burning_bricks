@@ -10,9 +10,10 @@ public:
 	~cGameScene();
 	void CreateScene();
 	void DestroyScene();
+	void DispatchCmd(pCommand cmd);
 	void ProcessCmd();
-	void HandleInput(pCommand cmd);
 	void Update();
+	void Render(pCanvas & canvas);
 
 protected:
 	void Swap();

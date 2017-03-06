@@ -33,7 +33,7 @@ void cGameScene::ProcessCmd()
 	});
 }
 
-void cGameScene::HandleInput(pCommand cmd)
+void cGameScene::DispatchCmd(pCommand cmd)
 {
 	CurObj->SendCmd(cmd);
 }
@@ -44,6 +44,11 @@ void cGameScene::Update()
 		it.second->Update();
 	});
 	this->Swap();
+}
+
+void cGameScene::Render(pCanvas & canvas)
+{
+
 }
 
 void cGameScene::Swap()

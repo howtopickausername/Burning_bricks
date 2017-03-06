@@ -4,8 +4,7 @@
 
 cGameObject::cGameObject(cState const& basic_state)
 {
-	BackState.push_back(basic_state.Copy());
-	CurState.push_back(basic_state.Copy());
+	State.push_back(basic_state.Copy());
 }
 
 cGameObject::~cGameObject()
@@ -15,22 +14,22 @@ cGameObject::~cGameObject()
 
 void cGameObject::SendCmd(pCommand cmd)
 {
-	CurCmdQ.push(cmd);
+	CmdQ.push(cmd);
 }
 
 void cGameObject::Update()
 {
-	for (auto const &s : BackState) {
+	for (auto const &s : State) {
 		s->Update();
 	}
 }
 
 void cGameObject::ProcessCmd()
 {
-	while (!BackCmdQ.empty()) {
-		auto cmd = BackCmdQ.front();
-		BackCmdQ.pop();
-		for (auto const& s : BackState) {
+	while (!CmdQ.empty()) {
+		auto cmd = CmdQ.front();
+		CmdQ.pop();
+		for (auto const& s : State) {
 			s->HandleInput(cmd);
 		}
 	}
@@ -38,13 +37,17 @@ void cGameObject::ProcessCmd()
 
 void cGameObject::Swap()
 {
-	CurCmdQ.swap(BackCmdQ);
-	CurState.swap(BackState);
+	Props.swap(BackProps);
 }
 
-const pState cGameObject::GetCommonState() const {
-	assert(CurState.size() > 0);
-	return CurState[0];
+void cGameObject::Render(pCanvas & canvas)
+{
+	// π”√ModelInfoªÊ÷∆
+}
+
+cGameObject::pProp const& cGameObject::GetProps() const
+{
+	return Props;
 }
 
 std::shared_ptr<cGameObject> cGameObject::Copy()

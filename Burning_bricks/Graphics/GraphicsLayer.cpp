@@ -1,49 +1,23 @@
 #include "stdafx.h"
 #include "GraphicsLayer.h"
+#include "GraphicsException.h"
+#include "Locator.h"
 
-cGraphicsLayer* Graphics()
-{
-	return cGraphicsLayer::GetGraphics();
-}
 const UINT cGraphicsLayer::m_uiMAX_CHARS_PER_FRAME = 512;
-cGraphicsLayer* cGraphicsLayer::m_GraphicsLayer = nullptr;
-cGraphicsLayer::cGraphicsLayer(HWND hWnd)
-	: m_Hwnd(hWnd),
-	m_StencilRefStored11(0)
+cGraphicsLayer::cGraphicsLayer()
+	:m_StencilRefStored11(0)
 {
-	cGraphicsLayer::m_GraphicsLayer = this;
-}
-
-void cGraphicsLayer::DestroyAll()
-{
-	SAFE_RELEASE(m_BlendState);
-	SAFE_RELEASE(m_pDepthStencilState);
-	SAFE_RELEASE(m_pDepthStencilView);
-	SAFE_RELEASE(m_pDepthStencilBuffer);
-	SAFE_RELEASE(m_pRenderTargetView);
-	SAFE_RELEASE(m_pBackBuffer);
-	SAFE_RELEASE(m_pSwapChain);
-	SAFE_RELEASE(m_pMessageQueue);
-	SAFE_RELEASE(m_Context);
-
-	//Release D2d////////////////////////////////////////////////////////////////////////
-	SAFE_RELEASE(m_pDirect2DFactory);
-	SAFE_RELEASE(m_pD2dRenderTarget);
-	SAFE_RELEASE(m_pLightSlateGrayBrush);
-	SAFE_RELEASE(m_pCornflowerBlueBrush);
-	ReportLiveDeviceObjects();
-	SAFE_RELEASE(m_Device);
-	cGraphicsLayer::m_GraphicsLayer = nullptr;
 }
 
 cGraphicsLayer::~cGraphicsLayer()
 {
-	DestroyAll();
+	this->Release();
 }
 
-void cGraphicsLayer::InitD3D(int width, int height, int bpp)
+void cGraphicsLayer::Init(HWND hWnd, int width, int height)
 {
-	CreateDeviceAndSwapChain(width, height, bpp);
+	cGraphics::Init(hWnd, width, height);
+	CreateDeviceAndSwapChain();
 	CreateDepthStencilBuffer();
 	CreateStates();
 	//D2d
@@ -101,31 +75,25 @@ void cGraphicsLayer::Clear(const float(&colClear)[4])
 	m_Context->ClearRenderTargetView(m_pRenderTargetView, colClear);
 }
 
-void cGraphicsLayer::ClearDepthStencil(const float fDepth, const UINT8 uiStencil)
+void cGraphicsLayer::ClearDepthStencil(float fDepth, int uiStencil)
 {
 	m_Context->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, fDepth, uiStencil);
 }
 
-void cGraphicsLayer::Create(HWND hWnd, short width, short height)
-{
-	new cGraphicsLayer(hWnd);
-	Graphics()->InitD3D(width, height, 32);
-}
-
-void cGraphicsLayer::CreateDeviceAndSwapChain(int width, int height, int bpp)
+void cGraphicsLayer::CreateDeviceAndSwapChain()
 {
 	HRESULT r = 0;
 	DXGI_SWAP_CHAIN_DESC swapDesc;
 	ZeroMemory(&swapDesc, sizeof(swapDesc));
 
 	swapDesc.BufferCount = 1;
-	swapDesc.BufferDesc.Width = width;
-	swapDesc.BufferDesc.Height = height;
+	swapDesc.BufferDesc.Width = m_width;
+	swapDesc.BufferDesc.Height = m_height;
 	swapDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapDesc.BufferDesc.RefreshRate.Numerator = 60;
 	swapDesc.BufferDesc.RefreshRate.Denominator = 1;
 	swapDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapDesc.OutputWindow = m_Hwnd;
+	swapDesc.OutputWindow = m_Wnd;
 	swapDesc.SampleDesc.Count = 1;
 	swapDesc.SampleDesc.Quality = 0;
 	swapDesc.Windowed = TRUE;
@@ -146,36 +114,31 @@ void cGraphicsLayer::CreateDeviceAndSwapChain(int width, int height, int bpp)
 
 	if (FAILED(r))
 	{
-		throw cGameError(L"Could not create IDirect3DDevice11\n");
+		throw cGraphicsExcp("Could not create IDirect3DDevice11\n");
 	}
 
 	r = m_Device->QueryInterface(__uuidof(ID3D11InfoQueue), (LPVOID*)&m_pMessageQueue);
 	if (FAILED(r))
 	{
-		throw cGameError(L"Could not create IDirect3DDevice11 message queue!\n");
+		throw cGraphicsExcp("Could not create IDirect3DDevice11 message queue!\n");
 	}
 	m_pMessageQueue->SetMuteDebugOutput(false);
 	m_pMessageQueue->SetMessageCountLimit(-1);
 
-	m_rcScreenRect.top = 0;
-	m_rcScreenRect.left = 0;
-	m_rcScreenRect.right = width;
-	m_rcScreenRect.bottom = height;
-
 	r = m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&m_pBackBuffer));
 	if (FAILED(r))
 	{
-		throw cGameError(L"Could not get back buffer!\n");
+		throw cGraphicsExcp("Could not get back buffer!\n");
 	}
 
 	r = m_Device->CreateRenderTargetView(m_pBackBuffer, nullptr, &m_pRenderTargetView);
 	if (FAILED(r))
 	{
-		throw cGameError(L"Could not create render target view\n");
+		throw cGraphicsExcp("Could not create render target view\n");
 	}
 	D3D11_VIEWPORT vp;
-	vp.Width = (FLOAT)width;
-	vp.Height = (FLOAT)height;
+	vp.Width = static_cast<FLOAT>(m_width);
+	vp.Height = static_cast<FLOAT>(m_height);
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	vp.TopLeftX = 0;
@@ -188,8 +151,8 @@ void cGraphicsLayer::CreateDepthStencilBuffer()
 	HRESULT hr = 0;
 	D3D11_TEXTURE2D_DESC descDepth;
 	ZeroMemory(&descDepth, sizeof(D3D10_TEXTURE2D_DESC));
-	descDepth.Width = m_rcScreenRect.right;
-	descDepth.Height = m_rcScreenRect.bottom;
+	descDepth.Width = m_width;
+	descDepth.Height = m_height;
 	descDepth.MipLevels = 1;
 	descDepth.ArraySize = 1;
 	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -202,7 +165,7 @@ void cGraphicsLayer::CreateDepthStencilBuffer()
 	hr = m_Device->CreateTexture2D(&descDepth, nullptr, &m_pDepthStencilBuffer);
 	if (FAILED(hr))
 	{
-		throw cGameError(L"Unable to create depth buffer!\n");
+		throw cGraphicsExcp("Unable to create depth buffer!\n");
 	}
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSView;
@@ -214,7 +177,7 @@ void cGraphicsLayer::CreateDepthStencilBuffer()
 	hr = m_Device->CreateDepthStencilView(m_pDepthStencilBuffer, &descDSView, &m_pDepthStencilView);
 	if (FAILED(hr))
 	{
-		throw cGameError(L"Could not create depth / stencil view!\n");
+		throw cGraphicsExcp("Could not create depth / stencil view!\n");
 	}
 	m_Context->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
 }
@@ -257,7 +220,7 @@ void cGraphicsLayer::CreateStates()
 	HRESULT hr = m_Device->CreateDepthStencilState(&descDS, &m_pDepthStencilState);
 	if (FAILED(hr))
 	{
-		throw cGameError(L"Could not create depth/stencil!\n");
+		throw cGraphicsExcp("Could not create depth/stencil!\n");
 	}
 	D3D11_BLEND_DESC blendState;
 	ZeroMemory(&blendState, sizeof(D3D10_BLEND_DESC1));
@@ -272,7 +235,7 @@ void cGraphicsLayer::CreateStates()
 	hr = m_Device->CreateBlendState(&blendState, &m_BlendState);
 	if (FAILED(hr))
 	{
-		throw cGameError(L"CreateAndSetBlendState failed");
+		throw cGraphicsExcp("CreateAndSetBlendState failed");
 	}
 }
 
@@ -287,19 +250,19 @@ void cGraphicsLayer::Create2DRsource()
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pDirect2DFactory);
 	if (FAILED(hr))
 	{
-		throw cGameError(L"Create2DRsource - D2d1CreateFactory failed.");
+		throw cGraphicsExcp("Create2DRsource - D2d1CreateFactory failed.");
 	}
 
 	RECT rc;
-	GetClientRect(m_Hwnd, &rc);
+	GetClientRect(m_Wnd, &rc);
 	D2D1_SIZE_U size = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
 	hr = m_pDirect2DFactory->CreateHwndRenderTarget(
 		D2D1::RenderTargetProperties(),
-		D2D1::HwndRenderTargetProperties(m_Hwnd, size),
+		D2D1::HwndRenderTargetProperties(m_Wnd, size),
 		&m_pD2dRenderTarget);
 	if (FAILED(hr))
 	{
-		throw cGameError(L"Create2DRsource - CreateHwndRenderTarget failed.");
+		throw cGraphicsExcp("Create2DRsource - CreateHwndRenderTarget failed.");
 	}
 	hr = m_pD2dRenderTarget->CreateSolidColorBrush(
 		D2D1::ColorF(D2D1::ColorF::LightSlateGray),
@@ -311,9 +274,9 @@ void cGraphicsLayer::Create2DRsource()
 
 void cGraphicsLayer::DiscardDeviceResource()
 {
-	SAFE_RELEASE(m_pD2dRenderTarget);
-	SAFE_RELEASE(m_pLightSlateGrayBrush);
-	SAFE_RELEASE(m_pCornflowerBlueBrush);
+	RELEASE(m_pD2dRenderTarget);
+	RELEASE(m_pLightSlateGrayBrush);
+	RELEASE(m_pCornflowerBlueBrush);
 }
 
 void cGraphicsLayer::D2DRender()
@@ -359,6 +322,37 @@ void cGraphicsLayer::D2DRender()
 	HRESULT hr = m_pD2dRenderTarget->EndDraw();
 	if (FAILED(hr))
 	{
-		OW::cOWLog::Dbg("D2DRender failed", hr);
+		cLocator::Log() << "D2DRender failed" << hr;
 	}
+}
+
+void cGraphicsLayer::Release()
+{
+	RELEASE(m_BlendState);
+	RELEASE(m_pDepthStencilState);
+	RELEASE(m_pDepthStencilView);
+	RELEASE(m_pDepthStencilBuffer);
+	RELEASE(m_pRenderTargetView);
+	RELEASE(m_pBackBuffer);
+	RELEASE(m_pSwapChain);
+	RELEASE(m_pMessageQueue);
+	RELEASE(m_Context);
+
+	//Release D2d////////////////////////////////////////////////////////////////////////
+	RELEASE(m_pDirect2DFactory);
+	RELEASE(m_pD2dRenderTarget);
+	RELEASE(m_pLightSlateGrayBrush);
+	RELEASE(m_pCornflowerBlueBrush);
+	ReportLiveDeviceObjects();
+	RELEASE(m_Device);
+}
+
+pCanvas cGraphicsLayer::NewCanvas(int width, int height)
+{
+	return std::make_shared<cCanvas>();
+}
+
+void cGraphicsLayer::Draw()
+{
+	D2DRender();
 }

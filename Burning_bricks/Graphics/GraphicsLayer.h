@@ -6,34 +6,24 @@
 #include <d2d1helper.h>
 #include <dwrite.h>
 #include <wincodec.h>
+#include "Graphics.h"
 
-class cGraphicsLayer
+class cGraphicsLayer : public cGraphics
 {
 public:
-	~cGraphicsLayer();
+	cGraphicsLayer();
+	virtual ~cGraphicsLayer();
 
-	void InitD3D(int width, int height, int bpp);
-	static void Create(HWND hWnd, short width, short height);
-
-	static cGraphicsLayer* GetGraphics() { return m_GraphicsLayer; }
-	inline ID3D11Device* GetDevice() { return m_Device; }
-	inline ID3D11DeviceContext* GetContext() { return m_Context; }
-
-	ID3D11Texture2D* GetBackBuffer() { return m_pBackBuffer; }
-
-	inline int Width() { return m_rcScreenRect.right; }
-	inline int Height() { return m_rcScreenRect.bottom; }
-
-	void Present();
-	void Clear(const float(&colClear)[4]);
-	void ClearDepthStencil(const float fDepth, const UINT8 uiStencil);
-	void DestroyAll();
-	
-	//D2d////////////////////////////////////////////////////////////////////////
-	void D2DRender();
+	void Init(HWND hWnd, int width, int height);
+	virtual void Release() override;
+	virtual pCanvas NewCanvas(int width, int height) override;
+	virtual void Draw() override;
+	void Present() override;
+	void Clear(const float(&colClear)[4]) override;
+	virtual void ClearDepthStencil(float fDepth, int uiStencil) override;
 
 protected:
-	void CreateDeviceAndSwapChain(int width, int height, int bpp);
+	void CreateDeviceAndSwapChain();
 	void CreateDepthStencilBuffer();
 	void ReportLiveDeviceObjects();
 	void CreateStates();
@@ -42,13 +32,11 @@ protected:
 	//D2d////////////////////////////////////////////////////////////////////////
 	void Create2DRsource();
 	void DiscardDeviceResource();
+	void D2DRender();
 
 	void DumpMessages();
 
 protected:
-	cGraphicsLayer(HWND hWnd);
-	static cGraphicsLayer* m_GraphicsLayer;
-	HWND m_Hwnd;
 	ID3D11Device *m_Device;
 	ID3D11DeviceContext* m_Context;
 	ID3D11Texture2D* m_pBackBuffer;
@@ -59,7 +47,6 @@ protected:
 	ID3D11RenderTargetView* m_pRenderTargetView;
 	IDXGISwapChain* m_pSwapChain;
 	ID3D11BlendState* m_BlendState;
-	RECT m_rcScreenRect;
 	
 	ID3D11InfoQueue* m_pMessageQueue;
 	static const UINT m_uiMAX_CHARS_PER_FRAME;
@@ -70,5 +57,3 @@ protected:
 	ID2D1SolidColorBrush *m_pLightSlateGrayBrush;
 	ID2D1SolidColorBrush *m_pCornflowerBlueBrush;
 };
-
-cGraphicsLayer* Graphics();

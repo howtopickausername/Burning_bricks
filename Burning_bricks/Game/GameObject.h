@@ -1,25 +1,42 @@
 #pragma once
+#include <array>
 #include <vector>
+#include <map>
 #include <queue>
+#include "Command.h"
+#include "TypesOfProperty.h"
 #include "State.h"
+#include "Graphics/Canvas.h"
+#include "Graphics/Model.h"
+#include "Graphics/ModelColor.h"
+#include "Graphics/ModelTranslate.h"
+
+class cModelInfo {
+	cModel model;
+	cModelColor color;
+	cModelTrans trans;
+};
 
 class cGameObject
 {
 public:
+	typedef std::map<ePropTypes, uPropValue> pProp;
 	cGameObject(cState const& basic_state);
 	~cGameObject();
 	void SendCmd(pCommand cmd);
 	void ProcessCmd();
 	void Update();
 	void Swap();
-	//基础状态保存所有通用属性,位置、方向、类型
-	const pState GetCommonState() const;
+	void Render(pCanvas & canvas);
+	//基础信息保存位置、方向、类型等
+	pProp const& GetProps() const;
 	std::shared_ptr<cGameObject> Copy();
 
 private:
-	std::queue<pCommand> CurCmdQ;
-	std::queue<pCommand> BackCmdQ;
-	std::vector<pState> CurState;
-	std::vector<pState> BackState;
+	std::array<cModelInfo, 3> Models;
+	std::map<ePropTypes, uPropValue> Props;
+	std::map<ePropTypes, uPropValue> BackProps;
+	std::queue<pCommand> CmdQ;
+	std::vector<pState> State;
 };
 typedef std::shared_ptr<cGameObject> pGameObject;

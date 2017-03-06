@@ -156,7 +156,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxguid.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>dxguid.lib;dinput8.lib;d3d11.lib;D2d1.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ConsoleD|x64'">
@@ -213,7 +213,7 @@
   <ItemGroup>
     <ClInclude Include="Audio\Audio.h" />
     <ClInclude Include="Burning_bricks.h" />
-    <ClInclude Include="ControlerExceptionDefine.h" />
+    <ClInclude Include="Controler\ControlerExceptionDefine.h" />
     <ClInclude Include="Controler\eResult.h" />
     <ClInclude Include="Controler\InputLayer.h" />
     <ClInclude Include="Controler\Keyboard.h" />
@@ -232,7 +232,15 @@
     <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\StateBreed.h" />
     <ClInclude Include="Game\StateMap.h" />
+    <ClInclude Include="Game\TypesOfProperty.h" />
+    <ClInclude Include="GlobalVars.h" />
+    <ClInclude Include="Graphics\Canvas.h" />
     <ClInclude Include="Graphics\Graphics.h" />
+    <ClInclude Include="Graphics\GraphicsException.h" />
+    <ClInclude Include="Graphics\GraphicsLayer.h" />
+    <ClInclude Include="Graphics\Model.h" />
+    <ClInclude Include="Graphics\ModelColor.h" />
+    <ClInclude Include="Graphics\ModelTranslate.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -257,6 +265,13 @@
     <ClCompile Include="Game\State.cpp" />
     <ClCompile Include="Game\StateBreed.cpp" />
     <ClCompile Include="Game\StateMap.cpp" />
+    <ClCompile Include="GlobalVars.cpp" />
+    <ClCompile Include="Graphics\Canvas.cpp" />
+    <ClCompile Include="Graphics\Graphics.cpp" />
+    <ClCompile Include="Graphics\GraphicsLayer.cpp" />
+    <ClCompile Include="Graphics\Model.cpp" />
+    <ClCompile Include="Graphics\ModelColor.cpp" />
+    <ClCompile Include="Graphics\ModelTranslate.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
