@@ -124,6 +124,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	gGlobal.hInst = hInstance; // Store instance handle in our global variable
 
+	RECT rt = { 0, 0, gGlobal.width, gGlobal.height };
+	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
 	gGlobal.hWnd = CreateWindowW(gGlobal.szWindowClass, gGlobal.szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 

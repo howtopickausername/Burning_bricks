@@ -9,7 +9,7 @@ cGraphics::cGraphics()
 
 cGraphics::~cGraphics()
 {
-
+	Release();
 }
 
 void cGraphics::Init(HWND hWnd, int width, int height)

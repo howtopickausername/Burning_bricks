@@ -11,7 +11,23 @@ cGraphicsLayer::cGraphicsLayer()
 
 cGraphicsLayer::~cGraphicsLayer()
 {
-	this->Release();
+	RELEASE(m_BlendState);
+	RELEASE(m_pDepthStencilState);
+	RELEASE(m_pDepthStencilView);
+	RELEASE(m_pDepthStencilBuffer);
+	RELEASE(m_pRenderTargetView);
+	RELEASE(m_pBackBuffer);
+	RELEASE(m_pSwapChain);
+	RELEASE(m_pMessageQueue);
+	RELEASE(m_Context);
+
+	//Release D2d////////////////////////////////////////////////////////////////////////
+	RELEASE(m_pDirect2DFactory);
+	RELEASE(m_pD2dRenderTarget);
+	RELEASE(m_pLightSlateGrayBrush);
+	RELEASE(m_pCornflowerBlueBrush);
+	ReportLiveDeviceObjects();
+	RELEASE(m_Device);
 }
 
 void cGraphicsLayer::Init(HWND hWnd, int width, int height)

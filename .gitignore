@@ -215,3 +215,4 @@ ModelManifest.xml
 *.tlog
 *.idb
 /Burning_bricks/ConsoleD/Burning_bricks.res
+*.opendb
