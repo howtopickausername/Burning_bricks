@@ -12,6 +12,7 @@
 #include "Graphics/ModelTranslate.h"
 
 class cModelInfo {
+public:
 	cModel model;
 	cModelColor color;
 	cModelTrans trans;
@@ -32,6 +33,7 @@ public:
 	//基础信息保存位置、方向、类型等
 	pProp const& GetProps() const;
 	pProp & GetBackProps();
+	std::array<cModelInfo, 3>& GetModels();
 	std::shared_ptr<cGameObject> Copy();
 
 private:

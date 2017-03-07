@@ -40,26 +40,38 @@ void cGameObject::Swap() {
 
 void cGameObject::Render(pCanvas & canvas) {
 	//使用ModelInfo绘制
+	canvas->begin();
 	std::map<ePropTypes, uPropValue>::iterator prop = Props.find(ePropTypes::eHp);
-	if (prop != Props.end()) {
-		canvas->begin();
-		float left = 100;
-		float top = 100;
-		float width = 100;
-		float height = 20;
-		canvas->DrawRect(left, top, left + width, top + height, 1);
-		canvas->DrawRect(left, top, left + width * prop->second.fv, top + height, 2);
-		canvas->DrawTextW(left, top, left + width * prop->second.fv, top + height, L"hello world");
-		canvas->end();
+ 	if (prop != Props.end()) {
+ 		float left = 100;
+ 		float top = 100;
+ 		float width = 100;
+ 		float height = 20;
+ 		canvas->DrawRect(left, top, left + width, top + height, 1);
+ 		canvas->DrawRect(left, top, left + width * prop->second.fv, top + height, 2);
+ 	}
+	std::wstring txt;
+	if (Models[0].model.resId == 1) {
+		txt = L"站立";
 	}
+	else if(Models[0].model.resId == 2) {
+		txt = L"行走";
+	}
+	canvas->DrawTextW(0, 0, 100, 50, txt);
+	canvas->end();
 }
 
-cGameObject::pProp const& cGameObject::GetProps() const{
+cGameObject::pProp const& cGameObject::GetProps() const {
 	return Props;
 }
 
 cGameObject::pProp & cGameObject::GetBackProps() {
 	return BackProps;
+}
+
+std::array<cModelInfo, 3>& cGameObject::GetModels()
+{
+	return Models;
 }
 
 std::shared_ptr<cGameObject> cGameObject::Copy() {
