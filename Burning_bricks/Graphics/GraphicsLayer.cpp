@@ -295,11 +295,15 @@ void cGraphicsLayer::DiscardDeviceResource()
 	RELEASE(m_pCornflowerBlueBrush);
 }
 
+ID2D1HwndRenderTarget & cGraphicsLayer::Get2dRt() {
+	return *m_pD2dRenderTarget;
+}
+
 void cGraphicsLayer::D2DRender()
 {
 	m_pD2dRenderTarget->BeginDraw();
 	m_pD2dRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
-	//m_pD2dRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+	m_pD2dRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 	D2D1_SIZE_F rtSize = m_pD2dRenderTarget->GetSize();
 	int width = static_cast<int>(rtSize.width);
 	int height = static_cast<int>(rtSize.height);
@@ -365,10 +369,40 @@ void cGraphicsLayer::Release()
 
 pCanvas cGraphicsLayer::NewCanvas(int width, int height)
 {
-	return std::make_shared<cCanvas>();
+	return std::make_shared<c2dCanvas>();
 }
 
 void cGraphicsLayer::Draw()
 {
 	D2DRender();
+}
+
+void c2dCanvas::begin() {
+	cGraphicsLayer& lay = dynamic_cast<cGraphicsLayer&>(cLocator::Graphics());
+	lay.Get2dRt().BeginDraw();
+	lay.Get2dRt().SetTransform(D2D1::Matrix3x2F::Identity());
+	lay.Get2dRt().Clear(D2D1::ColorF(D2D1::ColorF::White));
+}
+
+void c2dCanvas::DrawRect(float left, float top, float right, float bottom, int color) {
+	cGraphicsLayer& lay = dynamic_cast<cGraphicsLayer&>(cLocator::Graphics());
+	D2D1_RECT_F rectangle1 = D2D1::RectF(left, top, right, bottom);
+	ID2D1SolidColorBrush * brush = nullptr;
+	switch (color) {
+	case 1:
+		brush = lay.m_pLightSlateGrayBrush;
+		break;
+	case 2:
+		brush = lay.m_pCornflowerBlueBrush;
+		break;
+	default:
+		brush = lay.m_pLightSlateGrayBrush;
+		break;
+	}
+	lay.Get2dRt().FillRectangle(&rectangle1, brush);
+}
+
+void c2dCanvas::end() {
+	cGraphicsLayer& lay = dynamic_cast<cGraphicsLayer&>(cLocator::Graphics());
+	HRESULT hr = lay.Get2dRt().EndDraw();
 }

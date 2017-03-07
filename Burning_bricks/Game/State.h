@@ -2,13 +2,14 @@
 #include <stack>
 #include "StateMap.h"
 
+class cGameObject;
 class cState
 {
 public:
 	cState(pStateMap map);
 	~cState();
-	void Update();
-	void HandleInput(pCommand cmd);
+	void Update(cGameObject& obj);
+	void HandleInput(cGameObject& obj, pCommand cmd);
 	const pStateBreed GetBreed() const;
 	std::shared_ptr<cState> Copy() const;
 

@@ -13,30 +13,30 @@ cState::~cState()
 
 }
 
-void cState::Update()
+void cState::Update(cGameObject& obj)
 {
-	StateBreed->fUpdate();
+	StateBreed->fUpdate(obj);
 }
 
-void cState::HandleInput(pCommand cmd)
+void cState::HandleInput(cGameObject& obj, pCommand cmd)
 {
-	auto rt = StateBreed->fHandleInput(cmd);
+	auto rt = StateBreed->fHandleInput(obj, cmd);
 	if (std::get<0>(rt) == cStateBreed::OP::eRoleBack){
 		auto old = StateStack.top();
 		StateStack.pop();
-		StateBreed->fPost();
+		StateBreed->fPost(obj);
 		StateBreed = old;
-		old->fPre();
+		old->fPre(obj);
 	}
 	else if (std::get<0>(rt) == cStateBreed::OP::eNew) {
 		auto newBreed = StateMap->Map.find(std::get<1>(rt));
 		if (newBreed == StateMap->Map.end()){
 			newBreed = StateMap->ParentMap->find(std::get<1>(rt));
 		}
-		StateBreed->fPost();
+		StateBreed->fPost(obj);
 		StateStack.push(StateBreed);
 		StateBreed = std::make_shared<cStateBreed>(newBreed->second);
-		StateBreed->fPre();
+		StateBreed->fPre(obj);
 	}
 	else if (std::get<0>(rt) == cStateBreed::OP::eConstant) {
 		//do nothing

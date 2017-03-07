@@ -48,7 +48,9 @@ void cGameScene::Update()
 
 void cGameScene::Render(pCanvas & canvas)
 {
-
+	/*concurrency::parallel_*/std::for_each(begin(Objs), end(Objs), [&](auto it) {
+		it.second->Render(canvas);
+	});
 }
 
 void cGameScene::Swap()

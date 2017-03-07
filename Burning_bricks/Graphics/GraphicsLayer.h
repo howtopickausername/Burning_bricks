@@ -8,9 +8,18 @@
 #include <wincodec.h>
 #include "Graphics.h"
 
+class c2dCanvas : public cCanvas
+{
+public:
+	virtual void begin() override;
+	virtual void DrawRect(float left, float top, float right, float bottom, int color) override;
+	virtual void end() override;
+};
+
 class cGraphicsLayer : public cGraphics
 {
 public:
+	friend c2dCanvas;
 	cGraphicsLayer();
 	virtual ~cGraphicsLayer();
 
@@ -32,6 +41,7 @@ protected:
 	//D2d////////////////////////////////////////////////////////////////////////
 	void Create2DRsource();
 	void DiscardDeviceResource();
+	ID2D1HwndRenderTarget &Get2dRt();
 	void D2DRender();
 
 	void DumpMessages();

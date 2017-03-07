@@ -3,10 +3,10 @@
 
 cStateBreed::cStateBreed()
 {
-	fPre = std::function<void(void)>([]() {; });
-	fPost = std::function<void(void)>([]() {; });
-	fUpdate = std::function<void(void)>([]() {; });
-	fHandleInput = std::function<std::tuple<OP, int>(pCommand cmd)>([](pCommand) { return std::make_tuple(OP::eConstant, 0); });
+	fPre = std::function<void(cGameObject&)>([](cGameObject&) {; });
+	fPost = std::function<void(cGameObject&)>([](cGameObject&) {; });
+	fUpdate = std::function<void(cGameObject&)>([](cGameObject&) {; });
+	fHandleInput = std::function<std::tuple<OP, int>(cGameObject&, pCommand cmd)>([](cGameObject&, pCommand) { return std::make_tuple(OP::eConstant, 0); });
 }
 
 cStateBreed::~cStateBreed()

@@ -20,6 +20,7 @@ class cModelInfo {
 class cGameObject
 {
 public:
+	friend cStateBreed;
 	typedef std::map<ePropTypes, uPropValue> pProp;
 	cGameObject(cState const& basic_state);
 	~cGameObject();
@@ -30,6 +31,7 @@ public:
 	void Render(pCanvas & canvas);
 	//基础信息保存位置、方向、类型等
 	pProp const& GetProps() const;
+	pProp & GetBackProps();
 	std::shared_ptr<cGameObject> Copy();
 
 private:

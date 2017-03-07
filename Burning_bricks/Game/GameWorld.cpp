@@ -38,5 +38,4 @@ void cGameWorld::Update()
 void cGameWorld::Render()
 {
 	m_CurScene->Render(m_SceneCanvas);
-	cLocator::Graphics().Draw();
 }

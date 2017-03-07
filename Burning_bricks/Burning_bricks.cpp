@@ -155,10 +155,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		int wmId = LOWORD(wParam);
 		// Parse the menu selections:
-		switch (wmId) {
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
+		//switch (wmId) {
+		//default:
+		//	return DefWindowProc(hWnd, message, wParam, lParam);
+		//}
 	}
 	break;
 	case WM_CLOSE:
