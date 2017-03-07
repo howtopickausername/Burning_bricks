@@ -14,17 +14,17 @@ cMonsterFactory::~cMonsterFactory() {
 pGameObject cMonsterFactory::CreateMonster() {
 	pStateMap monsterMap = std::make_shared<cStateMap>();
 	cStateBreed sb;
-	sb.fUpdate = std::function<void(cGameObject& obj)>([](cGameObject&) {std::cout << "is Idling" << std::endl; });
+	sb.fUpdate = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
+		
+	});
 	sb.fHandleInput = std::function<std::tuple<cStateBreed::OP, int>(cGameObject&, pCommand cmd)>([](cGameObject& obj, pCommand cmd) {
-		OutputDebugString(L"fHandleInput");
 		switch (cmd->ID) {
-		case eCmd::eJump:
+		case eCmd::eTurnLeft:
 		{
 			cGameObject::pProp & bProps = obj.GetBackProps();
 			auto bhp = bProps.find(ePropTypes::eHp);
 			if (bhp != bProps.end()) {
-				bhp->second.fv *= 0.8;
-				OutputDebugString(L"eJump");
+				bhp->second.fv = 1;
 			}
 		}
 		break;

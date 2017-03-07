@@ -49,6 +49,7 @@ void cGameObject::Render(pCanvas & canvas) {
 		float height = 20;
 		canvas->DrawRect(left, top, left + width, top + height, 1);
 		canvas->DrawRect(left, top, left + width * prop->second.fv, top + height, 2);
+		canvas->DrawTextW(left, top, left + width * prop->second.fv, top + height, L"hello world");
 		canvas->end();
 	}
 }

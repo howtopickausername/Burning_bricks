@@ -18,5 +18,8 @@ void cCanvas::DrawRect(float left, float top, float right, float bottom, int col
 
 }
 
+void cCanvas::DrawText(float left, float top, float right, float bottom, std::wstring text) {
+}
+
 void cCanvas::end() {
 }

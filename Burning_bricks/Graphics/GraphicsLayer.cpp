@@ -268,7 +268,22 @@ void cGraphicsLayer::Create2DRsource()
 	{
 		throw cGraphicsExcp("Create2DRsource - D2d1CreateFactory failed.");
 	}
-
+	hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
+		reinterpret_cast<IUnknown**>(&m_pDWriteFactory)
+	);
+	if (FAILED(hr)) {
+		throw cGraphicsExcp("Create2DRsource - DWriteCreateFactory failed.");
+	}
+	hr = m_pDWriteFactory->CreateTextFormat(
+		L"Gabriola",                   // Font family name
+		NULL,                          // Font collection(NULL sets it to the system font collection)
+		DWRITE_FONT_WEIGHT_REGULAR,    // Weight
+		DWRITE_FONT_STYLE_NORMAL,      // Style
+		DWRITE_FONT_STRETCH_NORMAL,    // Stretch
+		50.0f,                         // Size    
+		L"en-us",                      // Local
+		&m_pTextFormat                 // Pointer to recieve the created object
+	);
 	RECT rc;
 	GetClientRect(m_Wnd, &rc);
 	D2D1_SIZE_U size = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
@@ -400,6 +415,12 @@ void c2dCanvas::DrawRect(float left, float top, float right, float bottom, int c
 		break;
 	}
 	lay.Get2dRt().FillRectangle(&rectangle1, brush);
+}
+
+void c2dCanvas::DrawText(float left, float top, float right, float bottom, std::wstring text) {
+	cGraphicsLayer& lay = dynamic_cast<cGraphicsLayer&>(cLocator::Graphics());
+	D2D1_RECT_F rectangle1 = D2D1::RectF(left, top, right, bottom);
+	lay.Get2dRt().DrawTextW(text.c_str(), text.length(), lay.m_pTextFormat, rectangle1, lay.m_pLightSlateGrayBrush);
 }
 
 void c2dCanvas::end() {

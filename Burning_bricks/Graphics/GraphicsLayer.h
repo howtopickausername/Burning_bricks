@@ -13,6 +13,7 @@ class c2dCanvas : public cCanvas
 public:
 	virtual void begin() override;
 	virtual void DrawRect(float left, float top, float right, float bottom, int color) override;
+	virtual void DrawText(float left, float top, float right, float bottom, std::wstring text);
 	virtual void end() override;
 };
 
@@ -64,6 +65,8 @@ protected:
 	//D2D////////////////////////////////////////////////////////////////////////
 	ID2D1Factory *m_pDirect2DFactory;
 	ID2D1HwndRenderTarget *m_pD2dRenderTarget;
+	IDWriteFactory* m_pDWriteFactory;
+	IDWriteTextFormat* m_pTextFormat;
 	ID2D1SolidColorBrush *m_pLightSlateGrayBrush;
 	ID2D1SolidColorBrush *m_pCornflowerBlueBrush;
 };
