@@ -4,10 +4,9 @@
 
 cGameObject::cGameObject(cState const& basic_state) {
 	State.push_back(basic_state.Copy());
-	uPropValue v;
-	v.fv = 1;
-	Props[ePropTypes::eHp] = v;
-	BackProps = Props;
+	for (auto const &s : State) {
+		s->Init(*this);
+	}
 }
 
 cGameObject::~cGameObject() {

@@ -8,6 +8,7 @@ class cState
 public:
 	cState(pStateMap map);
 	~cState();
+	void Init(cGameObject& obj);
 	void Update(cGameObject& obj);
 	void HandleInput(cGameObject& obj, pCommand cmd);
 	const pStateBreed GetBreed() const;

@@ -13,6 +13,10 @@ cState::~cState()
 
 }
 
+void cState::Init(cGameObject & obj) {
+	StateBreed->fPre(obj);
+}
+
 void cState::Update(cGameObject& obj)
 {
 	StateBreed->fUpdate(obj);

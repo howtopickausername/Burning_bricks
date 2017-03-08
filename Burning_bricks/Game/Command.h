@@ -6,6 +6,7 @@
 
 enum eCmd {
 	eNone = 0,
+	eCustom,
 	eGoForward,
 	eRetreat,
 	eTurnLeft,
