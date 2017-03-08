@@ -14,6 +14,8 @@ void cGameWorld::WorldBeginning()
 	KbCmds->CmdDownMaps[DIK_D] = std::make_shared<cCommand>(eTurnRight);
 	KbCmds->CmdDownMaps[DIK_J] = std::make_shared<cCommand>(eJump);
 	KbCmds->CmdDownMaps[DIK_ESCAPE] = std::make_shared<cCommand>(eTurnBack);
+	KbCmds->CmdDownMaps[DIK_Q] = std::make_shared<cCommand>(eSkill);
+	KbCmds->CmdUpMaps = KbCmds->CmdDownMaps;
 	cLocator::InputLayer().GetKeyboard()->SetReceiver(KbCmds);
 	m_SceneCanvas = cLocator::Graphics().NewCanvas(cLocator::Graphics().Width(), cLocator::Graphics().Height());
 	m_CurScene = std::make_shared<cGameScene>();

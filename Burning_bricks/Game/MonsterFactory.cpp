@@ -12,70 +12,97 @@ cMonsterFactory::~cMonsterFactory() {
 }
 
 pGameObject cMonsterFactory::CreateMonster() {
+	enum ebs
+	{
+		eNone,
+		eStand,
+		eWalk,
+		eSkill
+	};
 	pStateMap monsterMap = std::make_shared<cStateMap>();
-	cStateBreed sb0(0);	//初始化
-	sb0.fPre = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
+	cStateBreed sb0(eNone);	//初始化
+	sb0.fPre = cStateBreed::fPreType([](cStateBreed& sb, cGameObject& obj) {
 		auto& bhp = obj.GetBackProps();
-		uPropValue hp;
-		hp.fv = 1.0f;
-		bhp[ePropTypes::eHp] = hp;
-		pCommand cmd = std::make_shared<cCommand>(eCmd::eCustom);
-		obj.SendCmd(cmd);
+		bhp[ePropTypes::eHp] = MakePropValue(1.0f);
+		bhp[ePropTypes::eCustom] = MakePropValue(0.0f);
 	});
-	sb0.fHandleInput = std::function<std::tuple<cStateBreed::OP, int>(cGameObject&, pCommand cmd)>([](cGameObject& obj, pCommand cmd) {
-		return std::make_tuple(cStateBreed::OP::eNew, 1);
+	sb0.fUpdate = cStateBreed::fUpdateType([](cStateBreed& sb, cGameObject& obj) {
+		return cSbRtn(SbOp::eNew, eStand);
 	});
 	monsterMap->Insert(sb0);
-	cStateBreed sb1(1);	//站立 0
-	sb1.fPre = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
+	cStateBreed stand(eStand);	//站立 0
+	stand.fPre = cStateBreed::fPreType([](cStateBreed& sb, cGameObject& obj) {
 		auto& models = obj.GetModels();
 		models[0].model.resId = 1;	//站立
 	});
-	sb1.fUpdate = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
+	stand.fUpdate = cStateBreed::fUpdateType([](cStateBreed& sb, cGameObject& obj) {
 		auto bhp = obj.GetBackProps().find(ePropTypes::eHp);
 		if (bhp != obj.GetBackProps().end()) {
 			bhp->second.fv += 1.0f / FramesRate::num / 2;
 			if (bhp->second.fv > 1) {
-				pCommand cmd = std::make_shared<cCommand>(eCmd::eCustom);
-				obj.SendCmd(cmd);
+				return cSbRtn(SbOp::eNew, eWalk);
 			}
 		}
+		return cSbRtn(SbOp::eConstant, eNone);
 	});
-	sb1.fHandleInput = std::function<std::tuple<cStateBreed::OP, int>(cGameObject&, pCommand cmd)>([](cGameObject& obj, pCommand cmd) {
+	stand.fHandleInput = cStateBreed::fHdType([](cStateBreed& sb, cGameObject& obj, pCommand cmd) {
 		if (cmd->ID == eCmd::eGoForward) {
-			return std::make_tuple(cStateBreed::OP::eNew, 2);
+			return cSbRtn(SbOp::eNew, eWalk);
 		}
-		else if (cmd->ID == eCmd::eCustom) {
-			return std::make_tuple(cStateBreed::OP::eNew, 2);
+		else if (cmd->ID == eCmd::eSkill && cmd->Param == 1) {
+			return cSbRtn(SbOp::eNew, eSkill);
 		}
-		return std::make_tuple(cStateBreed::OP::eConstant, 0);
+		return cSbRtn(SbOp::eConstant, eNone);
 	});
-	monsterMap->Insert(sb1);
-	cStateBreed sb2(2); //行走 1
-	sb2.fPre = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
+	monsterMap->Insert(stand);
+	cStateBreed walk(eWalk); //行走 1
+	walk.fPre = cStateBreed::fPreType([](cStateBreed& sb, cGameObject& obj) {
 		auto& models = obj.GetModels();
 		models[0].model.resId = 2;	//行走
 	});
-	sb2.fUpdate = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
+	walk.fUpdate = cStateBreed::fUpdateType([](cStateBreed& sb, cGameObject& obj) {
 		auto bhp = obj.GetBackProps().find(ePropTypes::eHp);
 		if (bhp != obj.GetBackProps().end()){
 			bhp->second.fv -= 1.0f / FramesRate::num / 2;
 			if (bhp->second.fv < 0) {
-				pCommand cmd = std::make_shared<cCommand>(eCmd::eCustom);
-				obj.SendCmd(cmd);
+				return cSbRtn(SbOp::eNew, eStand);
 			}
 		}
+		return cSbRtn(SbOp::eConstant, eNone);
 	});
-	sb2.fHandleInput = std::function<std::tuple<cStateBreed::OP, int>(cGameObject&, pCommand cmd)>([](cGameObject& obj, pCommand cmd) {
+	walk.fHandleInput = cStateBreed::fHdType([](cStateBreed& sb, cGameObject& obj, pCommand cmd) {
 		if (cmd->ID == eCmd::eTurnBack) {
-			return std::make_tuple(cStateBreed::OP::eNew, 1);
+			return cSbRtn(SbOp::eNew, eStand);
 		}
-		else if (cmd->ID == eCmd::eCustom) {
-			return std::make_tuple(cStateBreed::OP::eNew, 1);
+		else if (cmd->ID == eCmd::eSkill && cmd->Param == 1) {
+			return cSbRtn(SbOp::eNew, eSkill);
 		}
-		return std::make_tuple(cStateBreed::OP::eConstant, 0);
+		return cSbRtn(SbOp::eConstant, eNone);
 	});
-	monsterMap->Insert(sb2);
+	monsterMap->Insert(walk);
+	cStateBreed skill(eSkill);
+	skill.fPre = cStateBreed::fPreType([](cStateBreed& sb, cGameObject& obj) {
+		sb.Buf.resize(1);
+		sb.Buf[0] = MakePropValue(0.0f);
+		obj.GetModels()[0].model.resId = 3;
+	});
+	skill.fUpdate = cStateBreed::fUpdateType([](cStateBreed& sb, cGameObject& obj) {
+		auto& Buf = sb.Buf;
+		Buf[0].iv++;
+		if (Buf[0].iv >= 2 * FramesRate::num){
+			return cSbRtn(SbOp::eRoleBack, eNone);
+		}
+		auto& prop = obj.GetBackProps();
+		prop[ePropTypes::eCustom] = MakePropValue(static_cast<float>(Buf[0].iv) / (2 * FramesRate::num));
+		return cSbRtn(SbOp::eConstant, eNone);
+	});
+	skill.fHandleInput = cStateBreed::fHdType([](cStateBreed& sb, cGameObject& obj, pCommand cmd) {
+		if (cmd->ID == eCmd::eSkill) {
+			return cSbRtn(SbOp::eRoleBack, eNone);
+		}
+		return cSbRtn(SbOp::eConstant, eNone);
+	});
+	monsterMap->Insert(skill);
 	pState monsterState = std::make_shared<cState>(monsterMap);
 	pGameObject monster = std::make_shared<cGameObject>(1, *monsterState.get());
 	return monster;

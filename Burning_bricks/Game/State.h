@@ -15,8 +15,11 @@ public:
 	std::shared_ptr<cState> Copy() const;
 
 private:
+	bool CheckNewBreed(cGameObject& obj);
+
 	pStateMap StateMap;
 	pStateBreed StateBreed;
 	std::stack<cStateBreed::IdType> StateStack;
+	pSbRtn NewBreed;	//即将切换到下一个状态状态
 };
 typedef std::shared_ptr<cState> pState;

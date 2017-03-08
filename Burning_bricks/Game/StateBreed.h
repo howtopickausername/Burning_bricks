@@ -8,24 +8,35 @@
 #include "Game/Command.h"
 
 class cGameObject;
+
+enum class SbOp {
+	eConstant,
+	eRoleBack,
+	eNew
+};
+class cSbRtn {
+public:
+	cSbRtn(SbOp op, int n);
+	SbOp operate;
+	int id;
+};
+typedef std::shared_ptr<cSbRtn> pSbRtn;
 class cStateBreed
 {
 public:
-	enum class OP {
-		eConstant,
-		eRoleBack,
-		eNew
-	};
 	typedef unsigned int IdType;
+	typedef std::function<void(cStateBreed&, cGameObject&)> fPreType;	//pre pos 不能改变状态
+	typedef fPreType fPostType;
+	typedef std::function<cSbRtn(cStateBreed&, cGameObject&)> fUpdateType;
+	typedef std::function<cSbRtn(cStateBreed&, cGameObject&, pCommand cmd)> fHdType;
 	cStateBreed(IdType id);
 	~cStateBreed();
 	const IdType Id;
-	std::function<void(cGameObject&)> fPre;	
-	std::function<void(cGameObject&)> fPost;
-	std::function<void(cGameObject&)> fUpdate;
-	std::function<std::tuple<OP, int>(cGameObject&, pCommand cmd)> fHandleInput;
+	fPreType fPre;	
+	fPostType fPost;
+	fUpdateType fUpdate;
+	fHdType fHandleInput;
 	//数据段的初始化应该在fPre里面做
-	std::vector<uPropValue> Buf;
-	std::vector<std::string> StrBuf;
+	std::vector<cPropValue> Buf;
 };
 typedef std::shared_ptr<cStateBreed> pStateBreed;

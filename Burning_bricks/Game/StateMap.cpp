@@ -27,7 +27,7 @@ cStateBreed const & cStateMap::At(cStateBreed::IdType id) {
 	if (t == Map.end()) {
 		t = ParentMap->find(id);
 		if (t == ParentMap->end()) {
-			throw std::invalid_argument("cStateMap::operator[]");
+			throw std::invalid_argument("cStateMap::operator[]-Could not find" + std::to_string(id));
 		}
 	}
 	return t->second;

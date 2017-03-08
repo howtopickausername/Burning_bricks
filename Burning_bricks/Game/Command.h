@@ -12,16 +12,16 @@ enum eCmd {
 	eTurnLeft,
 	eTurnRight,
 	eTurnBack,
-	eJump
+	eJump,
+	eSkill,
 };
 
 class cCommand
 {
 public:
-	cCommand(eCmd id = eNone);
+	explicit cCommand(eCmd id = eNone);
 	~cCommand();
 	eCmd ID;
-	std::vector<int> IntP;
-	std::vector<std::string> StrP;
+	int Param;
 };
 typedef std::shared_ptr<cCommand> pCommand;

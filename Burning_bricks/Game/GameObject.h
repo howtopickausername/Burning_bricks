@@ -22,7 +22,7 @@ class cGameObject
 {
 public:
 	friend cStateBreed;
-	typedef std::map<ePropTypes, uPropValue> pProp;
+	typedef std::map<ePropTypes, cPropValue> pProp;
 	typedef unsigned int IdType;
 	cGameObject(IdType id, cState const& basic_state);
 	~cGameObject();
@@ -40,8 +40,8 @@ public:
 
 private:
 	std::array<cModelInfo, 3> Models;
-	std::map<ePropTypes, uPropValue> Props;
-	std::map<ePropTypes, uPropValue> BackProps;
+	std::map<ePropTypes, cPropValue> Props;
+	std::map<ePropTypes, cPropValue> BackProps;
 	std::queue<pCommand> CmdQ;
 	std::vector<pState> State;
 };
