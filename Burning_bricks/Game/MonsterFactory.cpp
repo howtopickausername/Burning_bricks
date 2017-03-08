@@ -77,6 +77,6 @@ pGameObject cMonsterFactory::CreateMonster() {
 	});
 	monsterMap->Insert(sb2);
 	pState monsterState = std::make_shared<cState>(monsterMap);
-	pGameObject monster = std::make_shared<cGameObject>(*monsterState.get());
+	pGameObject monster = std::make_shared<cGameObject>(1, *monsterState.get());
 	return monster;
 }

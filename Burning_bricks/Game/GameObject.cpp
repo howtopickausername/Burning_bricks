@@ -2,7 +2,9 @@
 #include "GameObject.h"
 
 
-cGameObject::cGameObject(cState const& basic_state) {
+cGameObject::cGameObject(IdType id, cState const& basic_state) 
+	:Id(id)
+{
 	State.push_back(basic_state.Copy());
 	for (auto const &s : State) {
 		s->Init(*this);

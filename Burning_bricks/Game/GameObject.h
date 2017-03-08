@@ -23,7 +23,8 @@ class cGameObject
 public:
 	friend cStateBreed;
 	typedef std::map<ePropTypes, uPropValue> pProp;
-	cGameObject(cState const& basic_state);
+	typedef unsigned int IdType;
+	cGameObject(IdType id, cState const& basic_state);
 	~cGameObject();
 	void SendCmd(pCommand cmd);
 	void ProcessCmd();
@@ -35,6 +36,7 @@ public:
 	pProp & GetBackProps();
 	std::array<cModelInfo, 3>& GetModels();
 	std::shared_ptr<cGameObject> Copy();
+	const IdType Id;
 
 private:
 	std::array<cModelInfo, 3> Models;
