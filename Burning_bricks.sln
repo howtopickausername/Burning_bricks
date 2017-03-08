@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Burning_bricks", "Burning_bricks\Burning_bricks.vcxproj", "{6D892E4C-E351-49A2-8960-4F2050CE9623}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Effects11", "FX11-master\Effects11_2015.vcxproj", "{DF460EAB-570D-4B50-9089-2E2FC801BF38}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Effects11", "depends\FX11-master\Effects11_2015.vcxproj", "{DF460EAB-570D-4B50-9089-2E2FC801BF38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
