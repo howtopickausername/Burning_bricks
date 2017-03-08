@@ -17,6 +17,6 @@ public:
 private:
 	pStateMap StateMap;
 	pStateBreed StateBreed;
-	std::stack<pStateBreed> StateStack;
+	std::stack<cStateBreed::IdType> StateStack;
 };
 typedef std::shared_ptr<cState> pState;

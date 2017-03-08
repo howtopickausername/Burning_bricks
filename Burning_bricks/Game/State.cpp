@@ -26,16 +26,16 @@ void cState::HandleInput(cGameObject& obj, pCommand cmd)
 {
 	auto rt = StateBreed->fHandleInput(obj, cmd);
 	if (std::get<0>(rt) == cStateBreed::OP::eRoleBack){
-		auto old = StateStack.top();
+		auto oldId = StateStack.top();
 		StateStack.pop();
 		StateBreed->fPost(obj);
-		StateBreed = old;
-		old->fPre(obj);
+		StateBreed = std::make_shared<cStateBreed>(StateMap->At(oldId));
+		StateBreed->fPre(obj);
 	}
 	else if (std::get<0>(rt) == cStateBreed::OP::eNew) {
 		auto newBreed = StateMap->At(std::get<1>(rt));
 		StateBreed->fPost(obj);
-		StateStack.push(StateBreed);
+		StateStack.push(StateBreed->Id);
 		StateBreed = std::make_shared<cStateBreed>(newBreed);
 		StateBreed->fPre(obj);
 	}

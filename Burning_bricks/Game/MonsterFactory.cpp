@@ -34,11 +34,18 @@ pGameObject cMonsterFactory::CreateMonster() {
 	sb1.fUpdate = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
 		auto bhp = obj.GetBackProps().find(ePropTypes::eHp);
 		if (bhp != obj.GetBackProps().end()) {
-			bhp->second.fv += 1.0f / FramesRate::num / 10;
+			bhp->second.fv += 1.0f / FramesRate::num / 2;
+			if (bhp->second.fv > 1) {
+				pCommand cmd = std::make_shared<cCommand>(eCmd::eCustom);
+				obj.SendCmd(cmd);
+			}
 		}
 	});
 	sb1.fHandleInput = std::function<std::tuple<cStateBreed::OP, int>(cGameObject&, pCommand cmd)>([](cGameObject& obj, pCommand cmd) {
 		if (cmd->ID == eCmd::eGoForward) {
+			return std::make_tuple(cStateBreed::OP::eNew, 2);
+		}
+		else if (cmd->ID == eCmd::eCustom) {
 			return std::make_tuple(cStateBreed::OP::eNew, 2);
 		}
 		return std::make_tuple(cStateBreed::OP::eConstant, 0);
@@ -52,7 +59,7 @@ pGameObject cMonsterFactory::CreateMonster() {
 	sb2.fUpdate = std::function<void(cGameObject& obj)>([](cGameObject& obj) {
 		auto bhp = obj.GetBackProps().find(ePropTypes::eHp);
 		if (bhp != obj.GetBackProps().end()){
-			bhp->second.fv -= 1.0f / FramesRate::num / 10;
+			bhp->second.fv -= 1.0f / FramesRate::num / 2;
 			if (bhp->second.fv < 0) {
 				pCommand cmd = std::make_shared<cCommand>(eCmd::eCustom);
 				obj.SendCmd(cmd);
