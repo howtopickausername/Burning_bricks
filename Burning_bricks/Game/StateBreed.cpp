@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "StateBreed.h"
 
-cStateBreed::cStateBreed()
+cStateBreed::cStateBreed(IdType id)
+	:Id(id)
 {
 	fPre = std::function<void(cGameObject&)>([](cGameObject&) {; });
 	fPost = std::function<void(cGameObject&)>([](cGameObject&) {; });

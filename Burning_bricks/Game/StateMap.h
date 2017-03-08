@@ -6,11 +6,14 @@
 class cStateMap
 {
 public:
-	typedef std::map<int, cStateBreed> _MType;
+	typedef std::map<cStateBreed::IdType, cStateBreed> _MType;
 	cStateMap();
 	cStateMap(std::shared_ptr<_MType> parent);
 	~cStateMap();
+	void Insert(cStateBreed const& sb);
+	cStateBreed const& At(cStateBreed::IdType id);
 
+protected:
 	std::shared_ptr<_MType> ParentMap;
 	_MType Map;
 };

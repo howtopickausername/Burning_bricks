@@ -16,9 +16,10 @@ public:
 		eRoleBack,
 		eNew
 	};
-	cStateBreed();
+	typedef unsigned int IdType;
+	cStateBreed(IdType id);
 	~cStateBreed();
-
+	const IdType Id;
 	std::function<void(cGameObject&)> fPre;	
 	std::function<void(cGameObject&)> fPost;
 	std::function<void(cGameObject&)> fUpdate;

@@ -5,7 +5,7 @@
 cState::cState(pStateMap map)
 	:StateMap(map)
 {
-	StateBreed = std::make_shared<cStateBreed>(StateMap->Map.at(0));
+	StateBreed = std::make_shared<cStateBreed>(StateMap->At(0));
 }
 
 cState::~cState()
@@ -33,13 +33,10 @@ void cState::HandleInput(cGameObject& obj, pCommand cmd)
 		old->fPre(obj);
 	}
 	else if (std::get<0>(rt) == cStateBreed::OP::eNew) {
-		auto newBreed = StateMap->Map.find(std::get<1>(rt));
-		if (newBreed == StateMap->Map.end()){
-			newBreed = StateMap->ParentMap->find(std::get<1>(rt));
-		}
+		auto newBreed = StateMap->At(std::get<1>(rt));
 		StateBreed->fPost(obj);
 		StateStack.push(StateBreed);
-		StateBreed = std::make_shared<cStateBreed>(newBreed->second);
+		StateBreed = std::make_shared<cStateBreed>(newBreed);
 		StateBreed->fPre(obj);
 	}
 	else if (std::get<0>(rt) == cStateBreed::OP::eConstant) {
