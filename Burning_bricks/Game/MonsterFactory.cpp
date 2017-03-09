@@ -49,7 +49,7 @@ pGameObject cMonsterFactory::CreateMonster() {
 		if (cmd->ID == eCmd::eGoForward) {
 			return cSbRtn(SbOp::eNew, eWalk);
 		}
-		else if (cmd->ID == eCmd::eSkill && cmd->Param == 1) {
+		else if (cmd->ID == eCmd::eSkill) {
 			return cSbRtn(SbOp::eNew, eSkill);
 		}
 		return cSbRtn(SbOp::eConstant, eNone);
@@ -74,7 +74,7 @@ pGameObject cMonsterFactory::CreateMonster() {
 		if (cmd->ID == eCmd::eTurnBack) {
 			return cSbRtn(SbOp::eNew, eStand);
 		}
-		else if (cmd->ID == eCmd::eSkill && cmd->Param == 1) {
+		else if (cmd->ID == eCmd::eSkill) {
 			return cSbRtn(SbOp::eNew, eSkill);
 		}
 		return cSbRtn(SbOp::eConstant, eNone);

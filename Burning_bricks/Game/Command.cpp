@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "Command.h"
 
-cCommand::cCommand(eCmd id /*= 0*/)
+cCmdBase::cCmdBase(eCmd id /*= 0*/)
 	:ID(id)
 {
 
 }
 
-cCommand::~cCommand()
+cCmdBase::~cCmdBase()
 {
 
 }
