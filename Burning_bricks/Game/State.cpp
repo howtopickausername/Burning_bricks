@@ -8,6 +8,28 @@ cState::cState(pStateMap map)
 	StateBreed = std::make_shared<cStateBreed>(StateMap->At(0));
 }
 
+cState::cState(cState const & right) {
+	StateMap = right.StateMap;
+	StateBreed = right.StateBreed;
+	StateStack = right.StateStack;
+	NewBreed = right.NewBreed;
+}
+
+cState::cState(cState && right) {
+	StateMap = std::move(right.StateMap);
+	StateBreed = std::move(right.StateBreed);
+	StateStack = std::move(right.StateStack);
+	NewBreed = std::move(right.NewBreed);
+}
+
+cState & cState::operator=(cState && right) {
+	StateMap = std::move(right.StateMap);
+	StateBreed = std::move(right.StateBreed);
+	StateStack = std::move(right.StateStack);
+	NewBreed = std::move(right.NewBreed);
+	return *this;
+}
+
 cState::~cState()
 {
 

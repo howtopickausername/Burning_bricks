@@ -30,8 +30,9 @@ class cCommand : public cCmdBase
 {
 public:
 	template<size_t pos>
-	auto Get()->decltype(std::get<pos>(Param)) {
+	auto At()->decltype(std::get<pos>(Param)) {
 		return std::get<pos>(Param);
 	}
+private:
 	std::tuple<_Types...> Param;
 };

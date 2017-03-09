@@ -7,6 +7,9 @@ class cState
 {
 public:
 	cState(pStateMap map);
+	cState(cState const& right);
+	cState(cState && right);
+	cState& operator=(cState && right);
 	~cState();
 	void Init(cGameObject& obj);
 	void Update(cGameObject& obj);

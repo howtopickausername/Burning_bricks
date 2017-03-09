@@ -7,8 +7,6 @@ cGameWorld::cGameWorld()
 
 void cGameWorld::WorldBeginning()
 {
-	cCommand<int, float, std::string> ccc;
-	ccc.Get<1>() = 10;
 	KbCmds = std::make_shared<cKbCmdProductor>();
 	KbCmds->CmdDownMaps[DIK_W] = cCmdBase(eGoForward);
 	KbCmds->CmdDownMaps[DIK_S] = cCmdBase(eRetreat);
