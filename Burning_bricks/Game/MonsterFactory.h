@@ -8,5 +8,5 @@ public:
 	~cMonsterFactory();
 
 	static pGameObject CreateMonster();
-
+	static pGameObject CreateCamera();
 };

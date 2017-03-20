@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "GameObject.h"
+#include "Locator.h"
 
+cModelInfo::cModelInfo()
+	:model(nullptr),
+	transform(DirectX::SimpleMath::Matrix::Identity)
+{
+
+}
 
 cGameObject::cGameObject(IdType id, cState const& basic_state) 
 	:Id(id)
@@ -41,7 +48,7 @@ void cGameObject::Swap() {
 
 void cGameObject::Render(pCanvas & canvas) {
 	//使用ModelInfo绘制
-	canvas->begin();
+	/*canvas->begin();
 	std::map<ePropTypes, cPropValue>::iterator prop = Props.find(ePropTypes::eHp);
  	if (prop != Props.end()) {
  		float left = 100;
@@ -61,17 +68,32 @@ void cGameObject::Render(pCanvas & canvas) {
 		canvas->DrawRect(left, top, left + width * prop->second.fv, top + height, 2);
 	}
 	std::wstring txt;
-	if (Models[0].model.resId == 1) {
+	if (Models[0].model.resName == L"1") {
 		txt = L"站立";
 	}
-	else if(Models[0].model.resId == 2) {
+	else if(Models[0].model.resName == L"2") {
 		txt = L"行走";
 	}
-	else if (Models[0].model.resId == 3) {
+	else if (Models[0].model.resName == L"3") {
 		txt = L"技能";
 	}
 	canvas->DrawTextW(0, 0, 100, 50, txt);
-	canvas->end();
+	canvas->end();*/
+
+	cGraphics& gp = cLocator::Graphics();
+	DirectX::XMMATRIX viewM = gp.GetCameras()[0].ViewMatrix();
+	DirectX::XMMATRIX projM = gp.GetCameras()[0].ProjMatrix(gp.Width(), gp.Height());
+	for (auto mInfo : Models)
+	{
+		if (mInfo.model == nullptr){
+			continue;
+		}
+		using namespace DirectX::SimpleMath;
+		DirectX::XMMATRIX world = Matrix::Identity;
+		DirectX::Model* model = mInfo.model;
+		DirectX::XMMATRIX worldM = mInfo.transform;
+		model->Draw(gp.Contex(), gp.GetCommonStates(), worldM, viewM, projM);
+	}
 }
 
 cGameObject::pProp const& cGameObject::GetProps() const {

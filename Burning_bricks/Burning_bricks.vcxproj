@@ -151,13 +151,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)Depends\assimp-3.3.1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)Depends;$(SolutionDir)depends\FX11-master\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>dxguid.lib;dinput8.lib;d3d11.lib;D2d1.lib;Dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Depends\assimp-3.3.1\libs\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxguid.lib;dinput8.lib;d3d11.lib;D2d1.lib;Dwrite.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ConsoleD|x64'">
@@ -229,21 +229,29 @@
     <ClInclude Include="Game\KetboardCmdProductor.h" />
     <ClInclude Include="Game\Locator.h" />
     <ClInclude Include="Game\MonsterFactory.h" />
+    <ClInclude Include="Game\MouseCmdProductor.h" />
     <ClInclude Include="Game\RenderInfo.h" />
     <ClInclude Include="Game\State.h" />
     <ClInclude Include="Game\StateBreed.h" />
     <ClInclude Include="Game\StateMap.h" />
     <ClInclude Include="Game\TypesOfProperty.h" />
     <ClInclude Include="GlobalVars.h" />
+    <ClInclude Include="Graphics\Camera.h" />
     <ClInclude Include="Graphics\Canvas.h" />
+    <ClInclude Include="Graphics\Effect.h" />
     <ClInclude Include="Graphics\Graphics.h" />
+    <ClInclude Include="Graphics\GraphicsDefine.h" />
     <ClInclude Include="Graphics\GraphicsException.h" />
     <ClInclude Include="Graphics\GraphicsLayer.h" />
     <ClInclude Include="Graphics\Model.h" />
+    <ClInclude Include="Graphics\ModelCtr.h" />
     <ClInclude Include="Graphics\ModelColor.h" />
+    <ClInclude Include="Graphics\ModelRes.h" />
     <ClInclude Include="Graphics\ModelTranslate.h" />
     <ClInclude Include="Physics\Physics.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Resource\ResourceDefine.h" />
+    <ClInclude Include="Resource\ResourceExcepthion.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ToolKits\Log.h" />
@@ -263,15 +271,20 @@
     <ClCompile Include="Game\KetboardCmdProductor.cpp" />
     <ClCompile Include="Game\Locator.cpp" />
     <ClCompile Include="Game\MonsterFactory.cpp" />
+    <ClCompile Include="Game\MouseCmdProductor.cpp" />
     <ClCompile Include="Game\State.cpp" />
     <ClCompile Include="Game\StateBreed.cpp" />
     <ClCompile Include="Game\StateMap.cpp" />
     <ClCompile Include="GlobalVars.cpp" />
+    <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\Canvas.cpp" />
+    <ClCompile Include="Graphics\Effect.cpp" />
     <ClCompile Include="Graphics\Graphics.cpp" />
     <ClCompile Include="Graphics\GraphicsLayer.cpp" />
     <ClCompile Include="Graphics\Model.cpp" />
+    <ClCompile Include="Graphics\ModelCtr.cpp" />
     <ClCompile Include="Graphics\ModelColor.cpp" />
+    <ClCompile Include="Graphics\ModelRes.cpp" />
     <ClCompile Include="Graphics\ModelTranslate.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -289,7 +302,32 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Burning_bricks.ico" />
+    <Image Include="Image.bmp" />
+    <Image Include="Image1.bmp" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\depends\DirectXTK\DirectXTK_Desktop_2015.vcxproj">
+      <Project>{e0b52ae7-e160-4d32-bf3f-910b785e5a8e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\depends\FX11-master\Effects11_2015.vcxproj">
+      <Project>{df460eab-570d-4b50-9089-2e2fc801bf38}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\x64\Debug\Effect.fx">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </EntryPointName>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scene.fbx" />
+    <None Include="Shader.dgsl" />
+    <None Include="tt1.bin" />
+    <None Include="tt2.bin" />
+    <None Include="tt3.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

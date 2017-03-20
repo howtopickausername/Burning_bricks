@@ -64,7 +64,7 @@ void cMouse::UnAcquire()
 	m_pDevice->Unacquire();
 }
 
-void cMouse::SetReceiver(iMouseReceiver* pTarget)
+void cMouse::SetReceiver(std::shared_ptr<iMouseReceiver> pTarget)
 {
 	m_pTarget = pTarget;
 }

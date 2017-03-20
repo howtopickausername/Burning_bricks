@@ -6,9 +6,10 @@ cAudio* cLocator::m_audio = nullptr;
 cPhysics* cLocator::m_physics = nullptr;
 cGraphics* cLocator::m_Graphics = nullptr;
 cInputLayer* cLocator::m_InputLayer = nullptr;
+Gp::cModelRes* cLocator::m_ModelRes = nullptr;
 bool cLocator::m_Init = false;
 
-void cLocator::Init(cLog * log, cAudio * audio, cPhysics * phys, cGraphics * grap, cInputLayer* inputlayer)
+void cLocator::Init(cLog* log, cAudio* audio, cPhysics* phys, cGraphics* grap, cInputLayer* inputlayer, Gp::cModelRes* modelRes)
 {
 	assert(!m_Init && "cLocator already initialized");
 	m_Log = log;
@@ -16,6 +17,7 @@ void cLocator::Init(cLog * log, cAudio * audio, cPhysics * phys, cGraphics * gra
 	m_physics = phys;
 	m_Graphics = grap;
 	m_InputLayer = inputlayer;
+	m_ModelRes = modelRes;
 	m_Init = true;
 }
 
@@ -42,4 +44,9 @@ cGraphics& cLocator::Graphics()
 cInputLayer & cLocator::InputLayer()
 {
 	return *m_InputLayer;
+}
+
+Gp::cModelRes& cLocator::ModelRes()
+{
+	return *m_ModelRes;
 }

@@ -37,13 +37,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	int rtCode = 0;
 	{
-		std::shared_ptr<cLog> log(std::make_shared<cLog>());
-		std::shared_ptr<cAudio> audio(std::make_shared<cAudio>());
-		std::shared_ptr<cPhysics> physics(std::make_shared<cPhysics>());
-		std::shared_ptr<cGraphics> graphics(std::make_shared<cGraphicsLayer>());
+		std::unique_ptr<cLog> log(std::make_unique<cLog>());
+		std::unique_ptr<cAudio> audio(std::make_unique<cAudio>());
+		std::unique_ptr<cPhysics> physics(std::make_unique<cPhysics>());
+		std::unique_ptr<cGraphics> graphics(std::make_unique<cGraphicsLayer>());
 		graphics->Init(gGlobal.hWnd, gGlobal.width, gGlobal.height);
-		std::shared_ptr<cInputLayer> inputLayer(std::make_shared<cInputLayer>(gGlobal.hInst, gGlobal.hWnd, false));
-		cLocator::Init(log.get(), audio.get(), physics.get(), graphics.get(), inputLayer.get());
+		std::unique_ptr<cInputLayer> inputLayer(std::make_unique<cInputLayer>(gGlobal.hInst, gGlobal.hWnd, false));
+		std::unique_ptr<Gp::cModelRes> modelRes = std::make_unique<Gp::cModelRes>();
+		std::vector<std::wstring> modelResPaths = { L"Nanosuit2\\nanosuit2.3ds" };
+		modelRes->Init(*graphics->Device(), graphics->GetEffFactory(),modelResPaths);
+		cLocator::Init(log.get(), audio.get(), physics.get(), graphics.get(), inputLayer.get(), modelRes.get());
 		pGameWorld GW(std::make_shared<cGameWorld>());
 		GW->WorldBeginning();
 

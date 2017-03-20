@@ -18,15 +18,16 @@ public:
 	eResult Acquire();
 	void UnAcquire();
 	bool Poll(int key);
-	void SetReceiver(iMouseReceiver* pTarget);
+	void SetReceiver(std::shared_ptr<iMouseReceiver> pTarget);
 	void SetExclusive(bool bExclusive);
 	eResult Update();
 	bool RepeatAcquire;
+	constexpr static unsigned int NumOfBtns = 3;
 
 protected:
 	HWND m_hWnd;
 	bool m_bExclusive;
-	iMouseReceiver* m_pTarget;
+	std::shared_ptr<iMouseReceiver> m_pTarget;
 	LPDIRECTINPUTDEVICE8 m_pDevice;
 	LPDIRECTINPUTDEVICE8 m_pDeviceAbs;
 	DIMOUSESTATE m_LastState;

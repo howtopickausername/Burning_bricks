@@ -8,14 +8,15 @@
 #include "State.h"
 #include "Graphics/Canvas.h"
 #include "Graphics/Model.h"
+#include "Graphics/ModelCtr.h"
 #include "Graphics/ModelColor.h"
 #include "Graphics/ModelTranslate.h"
 
 class cModelInfo {
 public:
-	cModel model;
-	cModelColor color;
-	cModelTrans trans;
+	cModelInfo();
+	DirectX::Model* model;
+	DirectX::XMMATRIX transform;
 };
 
 class cGameObject

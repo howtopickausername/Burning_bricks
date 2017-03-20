@@ -29,6 +29,9 @@
     <Filter Include="Game\Protocol">
       <UniqueIdentifier>{29315071-1820-4923-a234-2435d16019ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{c41f5b8e-31a7-4c4a-9656-0baead9c3426}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -113,22 +116,46 @@
     <ClInclude Include="Graphics\GraphicsLayer.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\Model.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\ModelColor.h">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\ModelTranslate.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics\GraphicsException.h">
-      <Filter>Game</Filter>
-    </ClInclude>
     <ClInclude Include="Controler\ControlerExceptionDefine.h">
       <Filter>Controler</Filter>
     </ClInclude>
     <ClInclude Include="GlobalVars.h" />
+    <ClInclude Include="Graphics\ModelCtr.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicsException.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourceExcepthion.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Effect.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GraphicsDefine.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Model.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourceDefine.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\ModelRes.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Camera.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\MouseCmdProductor.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\StateBreed.cpp">
@@ -184,11 +211,7 @@
     <ClCompile Include="Game\GameWorld.cpp">
       <Filter>Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\KetboardCmdProductor.cpp" />
     <ClCompile Include="Graphics\GraphicsLayer.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\Model.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\ModelColor.cpp">
@@ -204,6 +227,21 @@
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="GlobalVars.cpp" />
+    <ClCompile Include="Game\KetboardCmdProductor.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\ModelCtr.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Effect.cpp" />
+    <ClCompile Include="Graphics\Model.cpp" />
+    <ClCompile Include="Graphics\ModelRes.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Camera.cpp" />
+    <ClCompile Include="Game\MouseCmdProductor.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Burning_bricks.rc">
@@ -217,5 +255,33 @@
     <Image Include="Burning_bricks.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Image.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Image1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\x64\Debug\Effect.fx">
+      <Filter>Resource Files</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader.dgsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Scene.fbx">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="tt1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="tt2.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="tt3.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

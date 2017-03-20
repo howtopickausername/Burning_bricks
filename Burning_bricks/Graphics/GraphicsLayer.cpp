@@ -22,10 +22,10 @@ cGraphicsLayer::~cGraphicsLayer()
 	RELEASE(m_Context);
 
 	//Release D2d////////////////////////////////////////////////////////////////////////
-	RELEASE(m_pDirect2DFactory);
-	RELEASE(m_pD2dRenderTarget);
-	RELEASE(m_pLightSlateGrayBrush);
-	RELEASE(m_pCornflowerBlueBrush);
+// 	RELEASE(m_pDirect2DFactory);
+// 	RELEASE(m_pD2dRenderTarget);
+// 	RELEASE(m_pLightSlateGrayBrush);
+// 	RELEASE(m_pCornflowerBlueBrush);
 	ReportLiveDeviceObjects();
 	RELEASE(m_Device);
 }
@@ -36,8 +36,10 @@ void cGraphicsLayer::Init(HWND hWnd, int width, int height)
 	CreateDeviceAndSwapChain();
 	CreateDepthStencilBuffer();
 	CreateStates();
+	m_EffFactory = std::make_unique<DirectX::EffectFactory>(m_Device);
+	m_States = std::make_unique<DirectX::CommonStates>(m_Device);
 	//D2d
-	Create2DRsource();
+	//Create2DRsource();
 }
 
 void cGraphicsLayer::DumpMessages()
@@ -96,6 +98,26 @@ void cGraphicsLayer::ClearDepthStencil(float fDepth, int uiStencil)
 	m_Context->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, fDepth, uiStencil);
 }
 
+DirectX::EffectFactory& cGraphicsLayer::GetEffFactory()
+{
+	return *m_EffFactory.get();
+}
+
+DirectX::CommonStates& cGraphicsLayer::GetCommonStates()
+{
+	return *m_States.get();
+}
+
+ID3D11Device* cGraphicsLayer::Device()
+{
+	return m_Device;
+}
+
+ID3D11DeviceContext* cGraphicsLayer::Contex()
+{
+	return m_Context;
+}
+
 void cGraphicsLayer::CreateDeviceAndSwapChain()
 {
 	HRESULT r = 0;
@@ -130,13 +152,13 @@ void cGraphicsLayer::CreateDeviceAndSwapChain()
 
 	if (FAILED(r))
 	{
-		throw cGraphicsExcp("Could not create IDirect3DDevice11\n");
+		throw Gp::Exception("Could not create IDirect3DDevice11\n");
 	}
 
 	r = m_Device->QueryInterface(__uuidof(ID3D11InfoQueue), (LPVOID*)&m_pMessageQueue);
 	if (FAILED(r))
 	{
-		throw cGraphicsExcp("Could not create IDirect3DDevice11 message queue!\n");
+		throw Gp::Exception("Could not create IDirect3DDevice11 message queue!\n");
 	}
 	m_pMessageQueue->SetMuteDebugOutput(false);
 	m_pMessageQueue->SetMessageCountLimit(-1);
@@ -144,13 +166,13 @@ void cGraphicsLayer::CreateDeviceAndSwapChain()
 	r = m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&m_pBackBuffer));
 	if (FAILED(r))
 	{
-		throw cGraphicsExcp("Could not get back buffer!\n");
+		throw Gp::Exception("Could not get back buffer!\n");
 	}
 
 	r = m_Device->CreateRenderTargetView(m_pBackBuffer, nullptr, &m_pRenderTargetView);
 	if (FAILED(r))
 	{
-		throw cGraphicsExcp("Could not create render target view\n");
+		throw Gp::Exception("Could not create render target view\n");
 	}
 	D3D11_VIEWPORT vp;
 	vp.Width = static_cast<FLOAT>(m_width);
@@ -181,7 +203,7 @@ void cGraphicsLayer::CreateDepthStencilBuffer()
 	hr = m_Device->CreateTexture2D(&descDepth, nullptr, &m_pDepthStencilBuffer);
 	if (FAILED(hr))
 	{
-		throw cGraphicsExcp("Unable to create depth buffer!\n");
+		throw Gp::Exception("Unable to create depth buffer!\n");
 	}
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSView;
@@ -193,7 +215,7 @@ void cGraphicsLayer::CreateDepthStencilBuffer()
 	hr = m_Device->CreateDepthStencilView(m_pDepthStencilBuffer, &descDSView, &m_pDepthStencilView);
 	if (FAILED(hr))
 	{
-		throw cGraphicsExcp("Could not create depth / stencil view!\n");
+		throw Gp::Exception("Could not create depth / stencil view!\n");
 	}
 	m_Context->OMSetRenderTargets(1, &m_pRenderTargetView, m_pDepthStencilView);
 }
@@ -223,20 +245,20 @@ void cGraphicsLayer::CreateStates()
 	descDS.StencilReadMask = (UINT8)0xFFFFFFFF;
 	descDS.StencilWriteMask = (UINT8)0xFFFFFFFF;
 
-	descDS.FrontFace.StencilFailOp = D3D11_STENCIL_OP_INCR;
-	descDS.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	descDS.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	descDS.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 	descDS.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	descDS.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	descDS.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	descDS.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	descDS.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
 	descDS.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	descDS.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	HRESULT hr = m_Device->CreateDepthStencilState(&descDS, &m_pDepthStencilState);
 	if (FAILED(hr))
 	{
-		throw cGraphicsExcp("Could not create depth/stencil!\n");
+		throw Gp::Exception("Could not create depth/stencil!\n");
 	}
 	D3D11_BLEND_DESC blendState;
 	ZeroMemory(&blendState, sizeof(D3D10_BLEND_DESC1));
@@ -251,8 +273,17 @@ void cGraphicsLayer::CreateStates()
 	hr = m_Device->CreateBlendState(&blendState, &m_BlendState);
 	if (FAILED(hr))
 	{
-		throw cGraphicsExcp("CreateAndSetBlendState failed");
+		throw Gp::Exception("CreateAndSetBlendState failed");
 	}
+	SetStates(m_Context);
+	D3D11_RASTERIZER_DESC rsDesc;
+	ZeroMemory(&rsDesc, sizeof(D3D11_RASTERIZER_DESC));
+	rsDesc.FillMode = D3D11_FILL_SOLID;
+	rsDesc.CullMode = D3D11_CULL_NONE;
+	rsDesc.FrontCounterClockwise = false;
+	rsDesc.DepthClipEnable = true;
+	m_Device->CreateRasterizerState(&rsDesc, &mNoCullRS);
+	m_Context->RSSetState(mNoCullRS);
 }
 
 void cGraphicsLayer::SetStates(ID3D11DeviceContext* context)
@@ -266,13 +297,13 @@ void cGraphicsLayer::Create2DRsource()
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pDirect2DFactory);
 	if (FAILED(hr))
 	{
-		throw cGraphicsExcp("Create2DRsource - D2d1CreateFactory failed.");
+		throw Gp::Exception("Create2DRsource - D2d1CreateFactory failed.");
 	}
 	hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory),
 		reinterpret_cast<IUnknown**>(&m_pDWriteFactory)
 	);
 	if (FAILED(hr)) {
-		throw cGraphicsExcp("Create2DRsource - DWriteCreateFactory failed.");
+		throw Gp::Exception("Create2DRsource - DWriteCreateFactory failed.");
 	}
 	hr = m_pDWriteFactory->CreateTextFormat(
 		L"Gabriola",                   // Font family name
@@ -293,7 +324,7 @@ void cGraphicsLayer::Create2DRsource()
 		&m_pD2dRenderTarget);
 	if (FAILED(hr))
 	{
-		throw cGraphicsExcp("Create2DRsource - CreateHwndRenderTarget failed.");
+		throw Gp::Exception("Create2DRsource - CreateHwndRenderTarget failed.");
 	}
 	hr = m_pD2dRenderTarget->CreateSolidColorBrush(
 		D2D1::ColorF(D2D1::ColorF::LightSlateGray),
@@ -390,6 +421,11 @@ pCanvas cGraphicsLayer::NewCanvas(int width, int height)
 void cGraphicsLayer::Draw()
 {
 	D2DRender();
+}
+
+void cGraphicsLayer::Draw(Gp::cModel& model, Gp::cEffect& effect)
+{
+	
 }
 
 void c2dCanvas::begin() {

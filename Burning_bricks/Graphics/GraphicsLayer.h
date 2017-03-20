@@ -26,11 +26,16 @@ public:
 
 	void Init(HWND hWnd, int width, int height);
 	virtual void Release() override;
+	virtual ID3D11Device* Device() override;
+	virtual ID3D11DeviceContext* Contex() override;
 	virtual pCanvas NewCanvas(int width, int height) override;
 	virtual void Draw() override;
+	virtual void Draw(Gp::cModel& model, Gp::cEffect& effect) override;
 	void Present() override;
 	void Clear(const float(&colClear)[4]) override;
 	virtual void ClearDepthStencil(float fDepth, int uiStencil) override;
+	virtual DirectX::EffectFactory& GetEffFactory() override;
+	virtual DirectX::CommonStates& GetCommonStates() override;
 
 protected:
 	void CreateDeviceAndSwapChain();
@@ -58,10 +63,14 @@ protected:
 	ID3D11RenderTargetView* m_pRenderTargetView;
 	IDXGISwapChain* m_pSwapChain;
 	ID3D11BlendState* m_BlendState;
+	ID3D11RasterizerState* mNoCullRS;
 	
 	ID3D11InfoQueue* m_pMessageQueue;
 	static const UINT m_uiMAX_CHARS_PER_FRAME;
 
+	std::unique_ptr<DirectX::EffectFactory> m_EffFactory;
+	std::unique_ptr<DirectX::CommonStates> m_States;
+	
 	//D2D////////////////////////////////////////////////////////////////////////
 	ID2D1Factory *m_pDirect2DFactory;
 	ID2D1HwndRenderTarget *m_pD2dRenderTarget;

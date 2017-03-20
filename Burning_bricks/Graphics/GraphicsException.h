@@ -1,16 +1,19 @@
 #pragma once
 #include <stdexcept>
+#include "GraphicsDefine.h"
 
-class cGraphicsExcp : public std::runtime_error
+_GP_BEGIN;
+class Exception : public std::runtime_error
 {
 public:
-	explicit cGraphicsExcp(const std::string& _Message)
+	explicit Exception(const std::string& _Message)
 		: std::runtime_error(_Message)
 	{	// construct from message string
 	}
 
-	explicit cGraphicsExcp(const char *_Message)
+	explicit Exception(const char *_Message)
 		: std::runtime_error(_Message)
 	{	// construct from message string
 	}
 };
+_GP_END;

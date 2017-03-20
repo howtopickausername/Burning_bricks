@@ -17,6 +17,7 @@ void cGraphics::Init(HWND hWnd, int width, int height)
 	m_Wnd = hWnd;
 	m_width = width;
 	m_height = height;
+	m_Cameras.emplace_back(Gp::cCamera());
 }
 
 void cGraphics::Release()
@@ -43,6 +44,11 @@ void cGraphics::Draw()
 {
 }
 
+void cGraphics::Draw(Gp::cModel& model, Gp::cEffect& effect)
+{
+
+}
+
 void cGraphics::Present()
 {
 
@@ -56,4 +62,9 @@ void cGraphics::Clear(const float(&colClear)[4])
 void cGraphics::ClearDepthStencil(float fDepth, int uiStencil)
 {
 
+}
+
+Gp::cCameras& cGraphics::GetCameras()
+{
+	return m_Cameras;
 }

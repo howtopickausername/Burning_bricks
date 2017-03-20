@@ -16,9 +16,11 @@ cGameScene::~cGameScene()
 
 void cGameScene::CreateScene()
 {
+	pGameObject camera = cMonsterFactory::CreateCamera();
+	Objs.insert(std::make_pair(camera->Id, camera));
 	pGameObject monster = cMonsterFactory::CreateMonster();
-	Objs.insert(std::make_pair(0, monster));
-	CurObj = monster;
+	Objs.insert(std::make_pair(monster->Id, monster));
+	CurObj = camera;
 }
 
 void cGameScene::DestroyScene()

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Struct Name="TAnnotation&lt;IBaseInterface&gt;">
+    <Position X="13" Y="13.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAABAAAAAAAAAAAAAIgAACAAAAAAAAAA=</HashCode>
+      <FileName>EffectVariable.inl</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TVariable&lt;IBaseInterface&gt;">
+    <Position X="13.25" Y="7.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAIABQAgAAigBAACEAAEAIDAAAAQAAEEIFUA=</HashCode>
+      <FileName>EffectVariable.inl</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TTopLevelVariable&lt;IBaseInterface&gt;">
+    <Position X="13" Y="3.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AABACAAAAAAAAAAAAAAAAAEAABgAAAEAAAAAAAAIAAA=</HashCode>
+      <FileName>EffectVariable.inl</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11Effects::SVariable">
+    <Position X="13.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQgEgAAAAAAAAAAAAAAAAAABAAAAAAAAAAAEA=</HashCode>
+      <FileName>Effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11Effects::SShaderBlock">
+    <Position X="0.5" Y="5.25" Width="2.25" />
+    <NestedTypes>
+      <Enum Name="D3DX11Effects::SShaderBlock::ESigType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Effect.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Struct Name="D3DX11Effects::SShaderBlock::SInterfaceParameter" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Effect.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Struct Name="D3DX11Effects::SShaderBlock::SReflectionData" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Effect.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQCAEBAAACAAAAIAAkgAQAggIAQCBgFgEGAA4QDAAA=</HashCode>
+      <FileName>Effect.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TUncastableVariable&lt;IBaseInterface&gt;">
+    <Position X="0.75" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAQAgAAiABAACEAAEAICAAAAAAAEEAEUA=</HashCode>
+      <FileName>EffectVariable.inl</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="D3DX11Effects::SAnonymousShader">
+    <Position X="4" Y="5.25" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAYAIAASJCAJAABwAQAAAAIAAIBUFCAUAAgQLBEA=</HashCode>
+      <FileName>Effect.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="pShaderBlock" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Struct>
+  <Interface Name="ID3DX11EffectVariable">
+    <Position X="9.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAIAJQAhAAigBAACEAAEAIDEACAQAAEEIFUA=</HashCode>
+      <FileName>Inc\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ID3DX11EffectShaderVariable">
+    <Position X="5" Y="0.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACACAAAABAAQAAAAIAAAAAFAAEAAAADAAA=</HashCode>
+      <FileName>Inc\d3dx11effect.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>
